@@ -1,10 +1,35 @@
 import pandas as pd
 import os
+import sqlite3
 
 EXTRACTED_CLOTH_IMAGES_FOLDER = os.getenv("EXTRACTED_CLOTH_IMAGES_FOLDER")
 
+# Load data from SQLite database instead of CSV to get updated image URLs
+def load_data_from_db():
+    conn = sqlite3.connect('myntra.db')
+    df = pd.read_sql_query("SELECT * FROM products", conn)
+    conn.close()
+    return df
+
+def filter_available_products(df):
+    """Filter products to only include those with available image files"""
+    def check_image_exists(extract_images):
+        if pd.isna(extract_images):
+            return False
+        image_path = os.path.join('fitted_images', extract_images)
+        return os.path.exists(image_path)
+    
+    # Filter out products without valid image files
+    df_available = df[df['extract_images'].apply(check_image_exists)].copy()
+    
+    print(f"Total products in database: {len(df)}")
+    print(f"Products with available images: {len(df_available)}")
+    
+    return df_available
+
 # Load and preprocess the data
-df = pd.read_csv("products_final_data.csv")
+df = load_data_from_db()
+df = filter_available_products(df)  # Only include products with available images
 df.dropna(inplace=True)
 
 # Update the 'extract_images' column
@@ -18,7 +43,7 @@ missing_columns = [col for col in required_columns if col not in df.columns]
 if missing_columns:
     raise ValueError(f"Missing columns in the DataFrame: {', '.join(missing_columns)}")
 
-categories = ['Top Wear', 'Bottom Wear', 'Dress (Full Length)']
+categories = ['Top Wear', 'Bottom Wear', 'Western Wear', 'Sports Wear']
 audiences = ['Male', 'Female', 'Unisex']
 
 def get_top_products(main_category, target_audience):

@@ -3,7 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 import sqlite3
 import os
-from rag import get_images_using_llm, viton_model
+from rag import get_images_using_llm, viton_model, FITTED_IMAGES_FOLDER
 from recommendation import get_top_products
 from typing import List
 from fastapi.middleware.cors import CORSMiddleware
@@ -20,6 +20,7 @@ app.mount("/fitted_images", StaticFiles(directory=image_directory), name="fitted
 origins = [
     "http://localhost",
     "http://localhost:3000",
+    "http://localhost:3001",
 ]
 
 app.add_middleware(
@@ -97,11 +98,14 @@ async def get_fitted_images(images, person_image_path):
     tasks = []
     for image in images:
         if image["main_category"] == "Top Wear":
-            tasks.append(viton_model(cloth_image_path=os.path.join(EXTRACTED_CLOTH_IMAGES_FOLDER, image["extract_images"]), cloth_category="Upper-body", person_image_path=person_image_path))
+            tasks.append(viton_model(cloth_image_path=os.path.join(EXTRACTED_CLOTH_IMAGES_FOLDER, image["extract_images"]), cloth_category="Upper body", person_image_path=person_image_path))
         elif image["main_category"] == "Bottom Wear":
-            tasks.append(viton_model(cloth_image_path=os.path.join(EXTRACTED_CLOTH_IMAGES_FOLDER, image["extract_images"]), cloth_category="Lower-body", person_image_path=person_image_path))
-        elif image["main_category"] == "Dress (Full Length)":
+            tasks.append(viton_model(cloth_image_path=os.path.join(EXTRACTED_CLOTH_IMAGES_FOLDER, image["extract_images"]), cloth_category="Lower body", person_image_path=person_image_path))
+        elif image["main_category"] == "Western Wear":
             tasks.append(viton_model(cloth_image_path=os.path.join(EXTRACTED_CLOTH_IMAGES_FOLDER, image["extract_images"]), cloth_category="Dress", person_image_path=person_image_path))
+        else:
+            # Default fallback for unknown categories
+            tasks.append(viton_model(cloth_image_path=os.path.join(EXTRACTED_CLOTH_IMAGES_FOLDER, image["extract_images"]), cloth_category="Upper body", person_image_path=person_image_path))
                 
     results = await asyncio.gather(*tasks)
     
@@ -114,23 +118,44 @@ async def get_recommendations(data: dict):
     target_audience = data["target_audience"]
     extracted_image = data['extract_images']
     
+    # Map categories to VITON categories
     if main_category == "Top Wear":
-        category = "Upper-body"
+        category = "Upper body"  # Note: Segmind uses "Upper body" not "Upper-body"
     elif main_category == "Bottom Wear":
-        category = "Lower-body"
-    elif main_category == "Dress (Full Length)":
+        category = "Lower body"  # Note: Segmind uses "Lower body" not "Lower-body"
+    elif main_category == "Western Wear":
         category = "Dress"
-        
-    extracted_image_path = await viton_model(cloth_image_path=os.path.join(EXTRACTED_CLOTH_IMAGES_FOLDER, extracted_image), cloth_category=category, person_image_path=os.path.join(UPLOAD_DIR, UPLOADED_PERSON_IMAGE_NAME))
-
+    else:
+        category = "Upper body"  # Default fallback
+    
+    print(f"Processing single item try-on: {extracted_image} with category: {category}")
+    
+    # Process ONLY the selected single item
+    extracted_image_path = await viton_model(
+        cloth_image_path=os.path.join(EXTRACTED_CLOTH_IMAGES_FOLDER, extracted_image), 
+        cloth_category=category, 
+        person_image_path=os.path.join(UPLOAD_DIR, UPLOADED_PERSON_IMAGE_NAME)
+    )
+    
+    print(f"VITON result: {extracted_image_path}")
+    
+    # Convert relative path to absolute path for recommendations
+    if extracted_image_path.startswith('/fitted_images/'):
+        absolute_tryon_path = os.path.join(FITTED_IMAGES_FOLDER, extracted_image_path.split('/')[-1])
+    else:
+        absolute_tryon_path = extracted_image_path
+    
+    print(f"Absolute try-on path for recommendations: {absolute_tryon_path}")
+    
+    # Get recommendations for complementary items
     if main_category == "Top Wear":
         recommended_category = "Bottom Wear"
-        
     elif main_category == "Bottom Wear":
         recommended_category = "Top Wear"
-        
-    elif main_category == "Dress (Full Length)":
-        recommended_category = "Dress (Full Length)"
+    elif main_category == "Western Wear":
+        recommended_category = "Western Wear"
+    else:
+        recommended_category = "Top Wear"  # Default fallback
         
     trendy_products = get_top_products(recommended_category, target_audience)
     
@@ -180,14 +205,43 @@ async def get_recommendations(data: dict):
     if any(not isinstance(product, dict) for product in fashion_trend_products):
         return {"error": "Invalid data format: Each item in 'fashion_trend_products' should be a dictionary"}
     
-    # Get fitted images
-    fitted_images = await get_fitted_images(fashion_trend_products, extracted_image_path)
+    # Get fitted images for the recommended items too
+    print("Generating virtual try-on results for recommendations...")
+    recommendation_tryon_results = []
+    
+    for product in fashion_trend_products:
+        try:
+            # Map product category to VITON category
+            if product["main_category"] == "Top Wear":
+                viton_category = "Upper body"
+            elif product["main_category"] == "Bottom Wear":
+                viton_category = "Lower body"
+            elif product["main_category"] == "Western Wear":
+                viton_category = "Dress"
+            else:
+                viton_category = "Upper body"  # Default
+            
+            # Generate virtual try-on for this recommendation
+            tryon_result = await viton_model(
+                cloth_image_path=os.path.join(EXTRACTED_CLOTH_IMAGES_FOLDER, product["extract_images"]), 
+                cloth_category=viton_category, 
+                person_image_path=absolute_tryon_path  # Use the absolute path
+            )
+            recommendation_tryon_results.append(tryon_result)
+            
+        except Exception as e:
+            print(f"Error generating try-on for {product['name']}: {e}")
+            # Fallback to original image if try-on fails
+            recommendation_tryon_results.append(product["extract_images"])
+    
+    # Return just the try-on result and recommendations with their try-on results
+    fitted_images = {"images": [extracted_image_path]}  # Only the single try-on result
     
     recommended_images_details = [
         {
             "name": fashion_trend_products[i]["name"],
             "subcategory": fashion_trend_products[i]["subcategory"],
-            "fitted_image": fashion_trend_products[i]["extract_images"],
+            "fitted_image": recommendation_tryon_results[i] if i < len(recommendation_tryon_results) else fashion_trend_products[i]["extract_images"],
             "original_image": fashion_trend_products[i]["img"],
             "seller": fashion_trend_products[i]["seller"],
             "price": fashion_trend_products[i]["price"],
@@ -214,6 +268,42 @@ async def feedback(positive_feedback: List[str], negative_feedback: List[str]):
         user_preferences["negative"][subcat] = user_preferences["negative"].get(subcat, 0) + 1
     
     return {"message": "Feedback received", "user_preferences": user_preferences}
+
+@app.post("/single_item_tryon")
+async def single_item_tryon(data: dict):
+    """Endpoint for trying on a single selected clothing item"""
+    main_category = data.get("main_category", "")
+    extracted_image = data.get('extract_images', '')
+    
+    # Map categories to VITON categories (Segmind format)
+    if main_category == "Top Wear":
+        category = "Upper body"
+    elif main_category == "Bottom Wear":
+        category = "Lower body" 
+    elif main_category == "Western Wear":
+        category = "Dress"
+    else:
+        category = "Upper body"  # Default fallback
+    
+    print(f"=== SINGLE ITEM TRY-ON ===")
+    print(f"Item: {extracted_image}")
+    print(f"Category: {category}")
+    print(f"=========================")
+    
+    # Process ONLY the selected single item
+    try:
+        result_image_path = await viton_model(
+            cloth_image_path=os.path.join(EXTRACTED_CLOTH_IMAGES_FOLDER, extracted_image), 
+            cloth_category=category, 
+            person_image_path=os.path.join(UPLOAD_DIR, UPLOADED_PERSON_IMAGE_NAME)
+        )
+        
+        print(f"Single try-on result: {result_image_path}")
+        return {"success": True, "fitted_image": result_image_path}
+        
+    except Exception as e:
+        print(f"Error in single item try-on: {e}")
+        return {"success": False, "error": str(e)}
 
 
 @app.post("/take_user_image")
@@ -259,8 +349,8 @@ def get_myntra_data():
         rows = cursor.fetchall()
         conn.close()
 
-        # Convert rows to list of dicts
-        data = [dict(row) for row in rows[:30]]
+        # Convert rows to list of dicts  
+        data = [dict(row) for row in rows]  # Remove the [:30] limit to show all products
         print(f"Returning {len(data)} rows")
         return data
 
@@ -273,4 +363,4 @@ def get_myntra_data():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8001)

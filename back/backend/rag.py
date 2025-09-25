@@ -8,6 +8,8 @@ import base64
 import os
 from dotenv import load_dotenv
 
+# Load environment variables from root .env file
+load_dotenv("../../.env")
 load_dotenv()
 
 os.environ["GOOGLE_API_KEY"] = os.environ["GEMINI_API_KEY"]
@@ -136,17 +138,35 @@ def local_image_to_base64(image_path):
     
 async def segmind_diffusion(cloth_image_url: str = None, model_image_url: str = 'https://levihsu-ootdiffusion.hf.space/file=/tmp/gradio/aa9673ab8fa122b9c5cdccf326e5f6fc244bc89b/model_8.png', cloth_image_path: str = None, model_image_path: str = None, clothing_category: str = None):
     api_key = os.getenv("SEGMIND_API_KEY")
+    print(f"SEGMIND_API_KEY available: {bool(api_key)}")
+    
+    if not api_key:
+        print("ERROR: SEGMIND_API_KEY not found in environment variables!")
+        print("Falling back to returning cloth image...")
+        # Return the original cloth image path as fallback
+        if cloth_image_path:
+            cloth_filename = cloth_image_path.split("\\")[-1].split('/')[-1]
+            return f"/fitted_images/{cloth_filename}"
+        return "/fitted_images/fallback.png"
+    
     url = "https://api.segmind.com/v1/try-on-diffusion"
-    # print(model_image_path)
+    print(f"Making Segmind API request to: {url}")
+    
     # Get model image base64
-    # model_image_b64 = local_image_to_base64(model_image_path) if model_image_path else await to_b64(model_image_url)
     if model_image_path:
         model_image_b64 = local_image_to_base64(model_image_path)
+        print(f"Using local person image: {model_image_path}")
     else:
         model_image_b64 = await to_b64(model_image_url)
+        print(f"Using remote person image: {model_image_url}")
 
     # Get cloth image base64
-    cloth_image_b64 = local_image_to_base64(cloth_image_path) if cloth_image_path else await to_b64(cloth_image_url)
+    if cloth_image_path:
+        cloth_image_b64 = local_image_to_base64(cloth_image_path)
+        print(f"Using local cloth image: {cloth_image_path}")
+    else:
+        cloth_image_b64 = await to_b64(cloth_image_url)
+        print(f"Using remote cloth image: {cloth_image_url}")
 
     data = {
         "model_image": model_image_b64,
@@ -164,27 +184,53 @@ async def segmind_diffusion(cloth_image_url: str = None, model_image_url: str = 
     }
 
     async with aiohttp.ClientSession() as session:
+        print("Sending request to Segmind API...")
         async with session.post(url, json=data, headers=headers) as response:
+            print(f"Segmind API response status: {response.status}")
+            
             if response.status == 200:
+                print("SUCCESS: Segmind API returned virtual try-on result!")
                 image_data = await response.read()
-                # print(image_data)
-                # print("###################")
-                if cloth_image_url:
-                    img_path = os.path.join(FITTED_IMAGES_FOLDER, f"{cloth_image_url.split('/')[-1]}.png")
-                elif cloth_image_path:
-                    cloth_image_path = cloth_image_path.split("\\")[-1]
-                    print(cloth_image_path)
-                    img_path = os.path.join(FITTED_IMAGES_FOLDER, cloth_image_path.split('/')[-1])    
+                print(f"Received image data size: {len(image_data)} bytes")
                 
+                # Generate unique filename for the try-on result
+                if cloth_image_url:
+                    base_name = cloth_image_url.split('/')[-1].split('.')[0]
+                    img_path = os.path.join(FITTED_IMAGES_FOLDER, f"{base_name}_tryon_result.png")
+                elif cloth_image_path:
+                    cloth_filename = cloth_image_path.split("\\")[-1].split('/')[-1]
+                    base_name = cloth_filename.split('.')[0]
+                    img_path = os.path.join(FITTED_IMAGES_FOLDER, f"{base_name}_tryon_result.png")
+                else:
+                    img_path = os.path.join(FITTED_IMAGES_FOLDER, "tryon_result.png")
+                
+                print(f"Saving try-on result to: {img_path}")
                 with open(img_path, "wb") as image_file:
                     image_file.write(image_data)
-                return img_path
+                
+                # Return relative path for web serving
+                relative_path = f"/fitted_images/{os.path.basename(img_path)}"
+                print(f"Returning relative path: {relative_path}")
+                return relative_path
             else:
                 error_message = await response.text()
+                print(f"ERROR: Segmind API failed with status {response.status}")
+                print(f"Error message: {error_message}")
+                
+                # Return fallback cloth image path
+                if cloth_image_path:
+                    cloth_filename = cloth_image_path.split("\\")[-1].split('/')[-1]
+                    fallback_path = f"/fitted_images/{cloth_filename}"
+                    print(f"Returning fallback path: {fallback_path}")
+                    return fallback_path
                 return {"error": response.status, "message": error_message}
 
 
 async def viton_model(cloth_image: str = None, cloth_category: str = None, person_image: str = 'https://levihsu-ootdiffusion.hf.space/file=/tmp/gradio/aa9673ab8fa122b9c5cdccf326e5f6fc244bc89b/model_8.png', cloth_image_path: str = None, person_image_path: str = None, model: str = DEFAULT_MODEL):
+    
+    # Force use of Segmind model for virtual try-on
+    model = "2"
+    print(f"Using model: {model} (Segmind API)")
     
     if model == "1":
         if cloth_image:
@@ -204,9 +250,9 @@ async def viton_model(cloth_image: str = None, cloth_category: str = None, perso
             cloth_category = "Upper body"
         elif cloth_category == "Lower-body":
             cloth_category = "Lower body"
-        print(cloth_category)
-        
+        print(f"Calling Segmind API with category: {cloth_category}")
         print("Person Image Path:", person_image_path)
+        print("Cloth Image Path:", cloth_image_path)
         result = await segmind_diffusion(cloth_image_url=cloth_image, model_image_url=person_image, clothing_category=cloth_category, cloth_image_path=cloth_image_path, model_image_path=person_image_path)
     
     return result
