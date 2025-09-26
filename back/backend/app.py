@@ -113,6 +113,7 @@ async def get_fitted_images(images, person_image_path):
     return {"images": results}
 
 @app.post("/get_recommendations")
+
 async def get_recommendations(data: dict):
     main_category = data["main_category"]
     target_audience = data["target_audience"]
