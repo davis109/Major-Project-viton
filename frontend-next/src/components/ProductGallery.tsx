@@ -27,7 +27,8 @@ export default function ProductGallery({
   onProductSelect,
   selectedProduct,
 }: ProductGalleryProps) {
-  const displayProducts = products.slice(0, 20) // Show first 20 products
+  // Show all products from all categories
+  const displayProducts = products
 
   return (
     <div className="space-y-4">

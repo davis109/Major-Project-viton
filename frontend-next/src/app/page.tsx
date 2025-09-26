@@ -51,12 +51,10 @@ export default function Home() {
       if (response.ok) {
         const data = await response.json()
         setProducts(data)
-        console.log('Products loaded:', data.length)
       } else {
         toast.error('Failed to load products')
       }
     } catch (error) {
-      console.error('Error loading products:', error)
       toast.error('Error loading products')
     } finally {
       setLoadingProducts(false)
@@ -159,7 +157,6 @@ export default function Home() {
         const result = await response.json()
         if (result.success) {
           // Create a simplified result structure for single item try-on
-          console.log('Try-on result received:', result.fitted_image)
           
           // Validate that the fitted_image path is reasonable
           if (result.fitted_image && typeof result.fitted_image === 'string') {
@@ -178,7 +175,6 @@ export default function Home() {
         throw new Error('Try-on failed')
       }
     } catch (error) {
-      console.error('Virtual try-on error:', error)
       toast.error('Virtual try-on failed. Please try again.')
       // Reset try-on result on error to prevent crashes
       setTryOnResult(null)

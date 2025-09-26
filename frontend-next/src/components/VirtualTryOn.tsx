@@ -117,7 +117,6 @@ export default function VirtualTryOn({
                   height={400}
                   className="w-full h-full object-cover"
                   onError={(e: any) => {
-                    console.error('Error loading try-on result image:', tryOnResult.selected_image)
                     e.currentTarget.src = '/placeholder-result.png'
                   }}
                 />

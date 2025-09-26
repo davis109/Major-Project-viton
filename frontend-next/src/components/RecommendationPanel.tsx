@@ -50,7 +50,6 @@ export default function RecommendationPanel({ recommendations }: RecommendationP
                   height={128}
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   onError={(e: any) => {
-                    console.error('Error loading recommendation image:', item.fitted_image)
                     // Try to fallback to original image
                     const fallbackSrc = `http://localhost:8001${item.original_image}`
                     if (e.currentTarget.src !== fallbackSrc) {
