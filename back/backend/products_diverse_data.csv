@@ -1,0 +1,481 @@
+product_id,name,img,subcategory,main_category,seller,price,discount,target_audience,extract_images
+1,Blazer 1,/fitted_images/1_extracted.png,Blazer,Top Wear,FashionStore,1001,1,Unisex,1_extracted.png
+2,Blazer 2,/fitted_images/2_extracted.png,Blazer,Top Wear,FashionStore,1002,2,Unisex,2_extracted.png
+3,Blazer 3,/fitted_images/3_extracted.png,Blazer,Top Wear,FashionStore,1003,3,Unisex,3_extracted.png
+4,Blazer 4,/fitted_images/4_extracted.png,Blazer,Top Wear,FashionStore,1004,4,Unisex,4_extracted.png
+5,Blazer 5,/fitted_images/5_extracted.png,Blazer,Top Wear,FashionStore,1005,5,Unisex,5_extracted.png
+6,Blazer 6,/fitted_images/6_extracted.png,Blazer,Top Wear,FashionStore,1006,6,Unisex,6_extracted.png
+7,Blazer 7,/fitted_images/7_extracted.png,Blazer,Top Wear,FashionStore,1007,7,Unisex,7_extracted.png
+8,Blazer 8,/fitted_images/8_extracted.png,Blazer,Top Wear,FashionStore,1008,8,Unisex,8_extracted.png
+9,Blazer 9,/fitted_images/9_extracted.png,Blazer,Top Wear,FashionStore,1009,9,Unisex,9_extracted.png
+10,Blazer 10,/fitted_images/10_extracted.png,Blazer,Top Wear,FashionStore,1010,10,Unisex,10_extracted.png
+11,Blazer 11,/fitted_images/11_extracted.png,Blazer,Top Wear,FashionStore,1011,11,Unisex,11_extracted.png
+12,Blazer 12,/fitted_images/12_extracted.png,Blazer,Top Wear,FashionStore,1012,12,Unisex,12_extracted.png
+13,Blazer 13,/fitted_images/13_extracted.png,Blazer,Top Wear,FashionStore,1013,13,Unisex,13_extracted.png
+14,Blazer 14,/fitted_images/14_extracted.png,Blazer,Top Wear,FashionStore,1014,14,Unisex,14_extracted.png
+15,Blazer 15,/fitted_images/15_extracted.png,Blazer,Top Wear,FashionStore,1015,15,Unisex,15_extracted.png
+16,Blazer 16,/fitted_images/16_extracted.png,Blazer,Top Wear,FashionStore,1016,16,Unisex,16_extracted.png
+17,Blazer 17,/fitted_images/17_extracted.png,Blazer,Top Wear,FashionStore,1017,17,Unisex,17_extracted.png
+18,Blazer 18,/fitted_images/18_extracted.png,Blazer,Top Wear,FashionStore,1018,18,Unisex,18_extracted.png
+19,Blazer 19,/fitted_images/19_extracted.png,Blazer,Top Wear,FashionStore,1019,19,Unisex,19_extracted.png
+20,Blazer 20,/fitted_images/20_extracted.png,Blazer,Top Wear,FashionStore,1020,20,Unisex,20_extracted.png
+21,Blazer 21,/fitted_images/21_extracted.png,Blazer,Top Wear,FashionStore,1021,21,Unisex,21_extracted.png
+22,Blazer 22,/fitted_images/22_extracted.png,Blazer,Top Wear,FashionStore,1022,22,Unisex,22_extracted.png
+23,Blazer 23,/fitted_images/23_extracted.png,Blazer,Top Wear,FashionStore,1023,23,Unisex,23_extracted.png
+24,Blazer 24,/fitted_images/24_extracted.png,Blazer,Top Wear,FashionStore,1024,24,Unisex,24_extracted.png
+25,Blazer 25,/fitted_images/25_extracted.png,Blazer,Top Wear,FashionStore,1025,25,Unisex,25_extracted.png
+26,Blazer 26,/fitted_images/26_extracted.png,Blazer,Top Wear,FashionStore,1026,26,Unisex,26_extracted.png
+27,Blazer 27,/fitted_images/27_extracted.png,Blazer,Top Wear,FashionStore,1027,27,Unisex,27_extracted.png
+28,Blazer 28,/fitted_images/28_extracted.png,Blazer,Top Wear,FashionStore,1028,28,Unisex,28_extracted.png
+29,Blazer 29,/fitted_images/29_extracted.png,Blazer,Top Wear,FashionStore,1029,29,Unisex,29_extracted.png
+30,Blazer 30,/fitted_images/30_extracted.png,Blazer,Top Wear,FashionStore,1030,30,Unisex,30_extracted.png
+31,Blazer 31,/fitted_images/31_extracted.png,Blazer,Top Wear,FashionStore,1031,31,Unisex,31_extracted.png
+32,Blazer 32,/fitted_images/32_extracted.png,Blazer,Top Wear,FashionStore,1032,32,Unisex,32_extracted.png
+33,Pants 33,/fitted_images/33_extracted.png,Pants,Bottom Wear,FashionStore,1033,33,Unisex,33_extracted.png
+34,Pants 34,/fitted_images/34_extracted.png,Pants,Bottom Wear,FashionStore,1034,34,Unisex,34_extracted.png
+35,Pants 35,/fitted_images/35_extracted.png,Pants,Bottom Wear,FashionStore,1035,35,Unisex,35_extracted.png
+36,Pants 36,/fitted_images/36_extracted.png,Pants,Bottom Wear,FashionStore,1036,36,Unisex,36_extracted.png
+37,Pants 37,/fitted_images/37_extracted.png,Pants,Bottom Wear,FashionStore,1037,37,Unisex,37_extracted.png
+38,Pants 38,/fitted_images/38_extracted.png,Pants,Bottom Wear,FashionStore,1038,38,Unisex,38_extracted.png
+39,Pants 39,/fitted_images/39_extracted.png,Pants,Bottom Wear,FashionStore,1039,39,Unisex,39_extracted.png
+40,Pants 40,/fitted_images/40_extracted.png,Pants,Bottom Wear,FashionStore,1040,40,Unisex,40_extracted.png
+41,Pants 41,/fitted_images/41_extracted.png,Pants,Bottom Wear,FashionStore,1041,41,Unisex,41_extracted.png
+42,Pants 42,/fitted_images/42_extracted.png,Pants,Bottom Wear,FashionStore,1042,42,Unisex,42_extracted.png
+43,Pants 43,/fitted_images/43_extracted.png,Pants,Bottom Wear,FashionStore,1043,43,Unisex,43_extracted.png
+44,Pants 44,/fitted_images/44_extracted.png,Pants,Bottom Wear,FashionStore,1044,44,Unisex,44_extracted.png
+45,Pants 45,/fitted_images/45_extracted.png,Pants,Bottom Wear,FashionStore,1045,45,Unisex,45_extracted.png
+46,Pants 46,/fitted_images/46_extracted.png,Pants,Bottom Wear,FashionStore,1046,46,Unisex,46_extracted.png
+47,Pants 47,/fitted_images/47_extracted.png,Pants,Bottom Wear,FashionStore,1047,47,Unisex,47_extracted.png
+48,Pants 48,/fitted_images/48_extracted.png,Pants,Bottom Wear,FashionStore,1048,48,Unisex,48_extracted.png
+49,Pants 49,/fitted_images/49_extracted.png,Pants,Bottom Wear,FashionStore,1049,49,Unisex,49_extracted.png
+50,Pants 50,/fitted_images/50_extracted.png,Pants,Bottom Wear,FashionStore,1050,50,Unisex,50_extracted.png
+51,Pants 51,/fitted_images/51_extracted.png,Pants,Bottom Wear,FashionStore,1051,51,Unisex,51_extracted.png
+52,Pants 52,/fitted_images/52_extracted.png,Pants,Bottom Wear,FashionStore,1052,52,Unisex,52_extracted.png
+53,Pants 53,/fitted_images/53_extracted.png,Pants,Bottom Wear,FashionStore,1053,53,Unisex,53_extracted.png
+54,Pants 54,/fitted_images/54_extracted.png,Pants,Bottom Wear,FashionStore,1054,54,Unisex,54_extracted.png
+55,Pants 55,/fitted_images/55_extracted.png,Pants,Bottom Wear,FashionStore,1055,55,Unisex,55_extracted.png
+56,Pants 56,/fitted_images/56_extracted.png,Pants,Bottom Wear,FashionStore,1056,56,Unisex,56_extracted.png
+57,Pants 57,/fitted_images/57_extracted.png,Pants,Bottom Wear,FashionStore,1057,57,Unisex,57_extracted.png
+58,Pants 58,/fitted_images/58_extracted.png,Pants,Bottom Wear,FashionStore,1058,58,Unisex,58_extracted.png
+59,Pants 59,/fitted_images/59_extracted.png,Pants,Bottom Wear,FashionStore,1059,59,Unisex,59_extracted.png
+60,Pants 60,/fitted_images/60_extracted.png,Pants,Bottom Wear,FashionStore,1060,60,Unisex,60_extracted.png
+61,Pants 61,/fitted_images/61_extracted.png,Pants,Bottom Wear,FashionStore,1061,61,Unisex,61_extracted.png
+62,Pants 62,/fitted_images/62_extracted.png,Pants,Bottom Wear,FashionStore,1062,62,Unisex,62_extracted.png
+63,Pants 63,/fitted_images/63_extracted.png,Pants,Bottom Wear,FashionStore,1063,63,Unisex,63_extracted.png
+64,Pants 64,/fitted_images/64_extracted.png,Pants,Bottom Wear,FashionStore,1064,64,Unisex,64_extracted.png
+65,Shorts 65,/fitted_images/65_extracted.png,Shorts,Bottom Wear,FashionStore,1065,65,Unisex,65_extracted.png
+66,Shorts 66,/fitted_images/66_extracted.png,Shorts,Bottom Wear,FashionStore,1066,66,Unisex,66_extracted.png
+67,Shorts 67,/fitted_images/67_extracted.png,Shorts,Bottom Wear,FashionStore,1067,67,Unisex,67_extracted.png
+68,Shorts 68,/fitted_images/68_extracted.png,Shorts,Bottom Wear,FashionStore,1068,68,Unisex,68_extracted.png
+69,Shorts 69,/fitted_images/69_extracted.png,Shorts,Bottom Wear,FashionStore,1069,69,Unisex,69_extracted.png
+70,Shorts 70,/fitted_images/70_extracted.png,Shorts,Bottom Wear,FashionStore,1070,0,Unisex,70_extracted.png
+71,Shorts 71,/fitted_images/71_extracted.png,Shorts,Bottom Wear,FashionStore,1071,1,Unisex,71_extracted.png
+72,Shorts 72,/fitted_images/72_extracted.png,Shorts,Bottom Wear,FashionStore,1072,2,Unisex,72_extracted.png
+73,Shorts 73,/fitted_images/73_extracted.png,Shorts,Bottom Wear,FashionStore,1073,3,Unisex,73_extracted.png
+74,Shorts 74,/fitted_images/74_extracted.png,Shorts,Bottom Wear,FashionStore,1074,4,Unisex,74_extracted.png
+75,Shorts 75,/fitted_images/75_extracted.png,Shorts,Bottom Wear,FashionStore,1075,5,Unisex,75_extracted.png
+76,Shorts 76,/fitted_images/76_extracted.png,Shorts,Bottom Wear,FashionStore,1076,6,Unisex,76_extracted.png
+77,Shorts 77,/fitted_images/77_extracted.png,Shorts,Bottom Wear,FashionStore,1077,7,Unisex,77_extracted.png
+78,Shorts 78,/fitted_images/78_extracted.png,Shorts,Bottom Wear,FashionStore,1078,8,Unisex,78_extracted.png
+79,Shorts 79,/fitted_images/79_extracted.png,Shorts,Bottom Wear,FashionStore,1079,9,Unisex,79_extracted.png
+80,Shorts 80,/fitted_images/80_extracted.png,Shorts,Bottom Wear,FashionStore,1080,10,Unisex,80_extracted.png
+81,Shorts 81,/fitted_images/81_extracted.png,Shorts,Bottom Wear,FashionStore,1081,11,Unisex,81_extracted.png
+82,Shorts 82,/fitted_images/82_extracted.png,Shorts,Bottom Wear,FashionStore,1082,12,Unisex,82_extracted.png
+83,Shorts 83,/fitted_images/83_extracted.png,Shorts,Bottom Wear,FashionStore,1083,13,Unisex,83_extracted.png
+84,Shorts 84,/fitted_images/84_extracted.png,Shorts,Bottom Wear,FashionStore,1084,14,Unisex,84_extracted.png
+85,Shorts 85,/fitted_images/85_extracted.png,Shorts,Bottom Wear,FashionStore,1085,15,Unisex,85_extracted.png
+86,Shorts 86,/fitted_images/86_extracted.png,Shorts,Bottom Wear,FashionStore,1086,16,Unisex,86_extracted.png
+87,Shorts 87,/fitted_images/87_extracted.png,Shorts,Bottom Wear,FashionStore,1087,17,Unisex,87_extracted.png
+88,Shorts 88,/fitted_images/88_extracted.png,Shorts,Bottom Wear,FashionStore,1088,18,Unisex,88_extracted.png
+89,Shorts 89,/fitted_images/89_extracted.png,Shorts,Bottom Wear,FashionStore,1089,19,Unisex,89_extracted.png
+90,Shorts 90,/fitted_images/90_extracted.png,Shorts,Bottom Wear,FashionStore,1090,20,Unisex,90_extracted.png
+91,Shorts 91,/fitted_images/91_extracted.png,Shorts,Bottom Wear,FashionStore,1091,21,Unisex,91_extracted.png
+92,Shorts 92,/fitted_images/92_extracted.png,Shorts,Bottom Wear,FashionStore,1092,22,Unisex,92_extracted.png
+93,Shorts 93,/fitted_images/93_extracted.png,Shorts,Bottom Wear,FashionStore,1093,23,Unisex,93_extracted.png
+94,Shorts 94,/fitted_images/94_extracted.png,Shorts,Bottom Wear,FashionStore,1094,24,Unisex,94_extracted.png
+95,Shorts 95,/fitted_images/95_extracted.png,Shorts,Bottom Wear,FashionStore,1095,25,Unisex,95_extracted.png
+96,Shorts 96,/fitted_images/96_extracted.png,Shorts,Bottom Wear,FashionStore,1096,26,Unisex,96_extracted.png
+97,Dress 97,/fitted_images/97_extracted.png,Dress,Western Wear,FashionStore,1097,27,Unisex,97_extracted.png
+98,Dress 98,/fitted_images/98_extracted.png,Dress,Western Wear,FashionStore,1098,28,Unisex,98_extracted.png
+99,Dress 99,/fitted_images/99_extracted.png,Dress,Western Wear,FashionStore,1099,29,Unisex,99_extracted.png
+100,Dress 100,/fitted_images/100_extracted.png,Dress,Western Wear,FashionStore,1100,30,Unisex,100_extracted.png
+101,Dress 101,/fitted_images/101_extracted.png,Dress,Western Wear,FashionStore,1101,31,Unisex,101_extracted.png
+102,Dress 102,/fitted_images/102_extracted.png,Dress,Western Wear,FashionStore,1102,32,Unisex,102_extracted.png
+103,Dress 103,/fitted_images/103_extracted.png,Dress,Western Wear,FashionStore,1103,33,Unisex,103_extracted.png
+104,Dress 104,/fitted_images/104_extracted.png,Dress,Western Wear,FashionStore,1104,34,Unisex,104_extracted.png
+105,Dress 105,/fitted_images/105_extracted.png,Dress,Western Wear,FashionStore,1105,35,Unisex,105_extracted.png
+106,Dress 106,/fitted_images/106_extracted.png,Dress,Western Wear,FashionStore,1106,36,Unisex,106_extracted.png
+107,Dress 107,/fitted_images/107_extracted.png,Dress,Western Wear,FashionStore,1107,37,Unisex,107_extracted.png
+108,Dress 108,/fitted_images/108_extracted.png,Dress,Western Wear,FashionStore,1108,38,Unisex,108_extracted.png
+109,Dress 109,/fitted_images/109_extracted.png,Dress,Western Wear,FashionStore,1109,39,Unisex,109_extracted.png
+110,Dress 110,/fitted_images/110_extracted.png,Dress,Western Wear,FashionStore,1110,40,Unisex,110_extracted.png
+111,Dress 111,/fitted_images/111_extracted.png,Dress,Western Wear,FashionStore,1111,41,Unisex,111_extracted.png
+112,Dress 112,/fitted_images/112_extracted.png,Dress,Western Wear,FashionStore,1112,42,Unisex,112_extracted.png
+113,Dress 113,/fitted_images/113_extracted.png,Dress,Western Wear,FashionStore,1113,43,Unisex,113_extracted.png
+114,Dress 114,/fitted_images/114_extracted.png,Dress,Western Wear,FashionStore,1114,44,Unisex,114_extracted.png
+115,Dress 115,/fitted_images/115_extracted.png,Dress,Western Wear,FashionStore,1115,45,Unisex,115_extracted.png
+116,Dress 116,/fitted_images/116_extracted.png,Dress,Western Wear,FashionStore,1116,46,Unisex,116_extracted.png
+117,Dress 117,/fitted_images/117_extracted.png,Dress,Western Wear,FashionStore,1117,47,Unisex,117_extracted.png
+118,Dress 118,/fitted_images/118_extracted.png,Dress,Western Wear,FashionStore,1118,48,Unisex,118_extracted.png
+119,Dress 119,/fitted_images/119_extracted.png,Dress,Western Wear,FashionStore,1119,49,Unisex,119_extracted.png
+120,Dress 120,/fitted_images/120_extracted.png,Dress,Western Wear,FashionStore,1120,50,Unisex,120_extracted.png
+121,Dress 121,/fitted_images/121_extracted.png,Dress,Western Wear,FashionStore,1121,51,Unisex,121_extracted.png
+122,Dress 122,/fitted_images/122_extracted.png,Dress,Western Wear,FashionStore,1122,52,Unisex,122_extracted.png
+123,Dress 123,/fitted_images/123_extracted.png,Dress,Western Wear,FashionStore,1123,53,Unisex,123_extracted.png
+124,Dress 124,/fitted_images/124_extracted.png,Dress,Western Wear,FashionStore,1124,54,Unisex,124_extracted.png
+125,Dress 125,/fitted_images/125_extracted.png,Dress,Western Wear,FashionStore,1125,55,Unisex,125_extracted.png
+126,Dress 126,/fitted_images/126_extracted.png,Dress,Western Wear,FashionStore,1126,56,Unisex,126_extracted.png
+127,Dress 127,/fitted_images/127_extracted.png,Dress,Western Wear,FashionStore,1127,57,Unisex,127_extracted.png
+128,Dress 128,/fitted_images/128_extracted.png,Dress,Western Wear,FashionStore,1128,58,Unisex,128_extracted.png
+129,Hoodie 129,/fitted_images/129_extracted.png,Hoodie,Top Wear,FashionStore,1129,59,Unisex,129_extracted.png
+130,Hoodie 130,/fitted_images/130_extracted.png,Hoodie,Top Wear,FashionStore,1130,60,Unisex,130_extracted.png
+131,Hoodie 131,/fitted_images/131_extracted.png,Hoodie,Top Wear,FashionStore,1131,61,Unisex,131_extracted.png
+132,Hoodie 132,/fitted_images/132_extracted.png,Hoodie,Top Wear,FashionStore,1132,62,Unisex,132_extracted.png
+133,Hoodie 133,/fitted_images/133_extracted.png,Hoodie,Top Wear,FashionStore,1133,63,Unisex,133_extracted.png
+134,Hoodie 134,/fitted_images/134_extracted.png,Hoodie,Top Wear,FashionStore,1134,64,Unisex,134_extracted.png
+135,Hoodie 135,/fitted_images/135_extracted.png,Hoodie,Top Wear,FashionStore,1135,65,Unisex,135_extracted.png
+136,Hoodie 136,/fitted_images/136_extracted.png,Hoodie,Top Wear,FashionStore,1136,66,Unisex,136_extracted.png
+137,Hoodie 137,/fitted_images/137_extracted.png,Hoodie,Top Wear,FashionStore,1137,67,Unisex,137_extracted.png
+138,Hoodie 138,/fitted_images/138_extracted.png,Hoodie,Top Wear,FashionStore,1138,68,Unisex,138_extracted.png
+139,Hoodie 139,/fitted_images/139_extracted.png,Hoodie,Top Wear,FashionStore,1139,69,Unisex,139_extracted.png
+140,Hoodie 140,/fitted_images/140_extracted.png,Hoodie,Top Wear,FashionStore,1140,0,Unisex,140_extracted.png
+141,Hoodie 141,/fitted_images/141_extracted.png,Hoodie,Top Wear,FashionStore,1141,1,Unisex,141_extracted.png
+142,Hoodie 142,/fitted_images/142_extracted.png,Hoodie,Top Wear,FashionStore,1142,2,Unisex,142_extracted.png
+143,Hoodie 143,/fitted_images/143_extracted.png,Hoodie,Top Wear,FashionStore,1143,3,Unisex,143_extracted.png
+144,Hoodie 144,/fitted_images/144_extracted.png,Hoodie,Top Wear,FashionStore,1144,4,Unisex,144_extracted.png
+145,Hoodie 145,/fitted_images/145_extracted.png,Hoodie,Top Wear,FashionStore,1145,5,Unisex,145_extracted.png
+146,Hoodie 146,/fitted_images/146_extracted.png,Hoodie,Top Wear,FashionStore,1146,6,Unisex,146_extracted.png
+147,Hoodie 147,/fitted_images/147_extracted.png,Hoodie,Top Wear,FashionStore,1147,7,Unisex,147_extracted.png
+148,Hoodie 148,/fitted_images/148_extracted.png,Hoodie,Top Wear,FashionStore,1148,8,Unisex,148_extracted.png
+149,Hoodie 149,/fitted_images/149_extracted.png,Hoodie,Top Wear,FashionStore,1149,9,Unisex,149_extracted.png
+150,Hoodie 150,/fitted_images/150_extracted.png,Hoodie,Top Wear,FashionStore,1150,10,Unisex,150_extracted.png
+151,Hoodie 151,/fitted_images/151_extracted.png,Hoodie,Top Wear,FashionStore,1151,11,Unisex,151_extracted.png
+152,Hoodie 152,/fitted_images/152_extracted.png,Hoodie,Top Wear,FashionStore,1152,12,Unisex,152_extracted.png
+153,Hoodie 153,/fitted_images/153_extracted.png,Hoodie,Top Wear,FashionStore,1153,13,Unisex,153_extracted.png
+154,Hoodie 154,/fitted_images/154_extracted.png,Hoodie,Top Wear,FashionStore,1154,14,Unisex,154_extracted.png
+155,Hoodie 155,/fitted_images/155_extracted.png,Hoodie,Top Wear,FashionStore,1155,15,Unisex,155_extracted.png
+156,Hoodie 156,/fitted_images/156_extracted.png,Hoodie,Top Wear,FashionStore,1156,16,Unisex,156_extracted.png
+157,Hoodie 157,/fitted_images/157_extracted.png,Hoodie,Top Wear,FashionStore,1157,17,Unisex,157_extracted.png
+158,Hoodie 158,/fitted_images/158_extracted.png,Hoodie,Top Wear,FashionStore,1158,18,Unisex,158_extracted.png
+159,Hoodie 159,/fitted_images/159_extracted.png,Hoodie,Top Wear,FashionStore,1159,19,Unisex,159_extracted.png
+160,Hoodie 160,/fitted_images/160_extracted.png,Hoodie,Top Wear,FashionStore,1160,20,Unisex,160_extracted.png
+161,Jacket 161,/fitted_images/161_extracted.png,Jacket,Top Wear,FashionStore,1161,21,Unisex,161_extracted.png
+162,Jacket 162,/fitted_images/162_extracted.png,Jacket,Top Wear,FashionStore,1162,22,Unisex,162_extracted.png
+163,Jacket 163,/fitted_images/163_extracted.png,Jacket,Top Wear,FashionStore,1163,23,Unisex,163_extracted.png
+164,Jacket 164,/fitted_images/164_extracted.png,Jacket,Top Wear,FashionStore,1164,24,Unisex,164_extracted.png
+165,Jacket 165,/fitted_images/165_extracted.png,Jacket,Top Wear,FashionStore,1165,25,Unisex,165_extracted.png
+166,Jacket 166,/fitted_images/166_extracted.png,Jacket,Top Wear,FashionStore,1166,26,Unisex,166_extracted.png
+167,Jacket 167,/fitted_images/167_extracted.png,Jacket,Top Wear,FashionStore,1167,27,Unisex,167_extracted.png
+168,Jacket 168,/fitted_images/168_extracted.png,Jacket,Top Wear,FashionStore,1168,28,Unisex,168_extracted.png
+169,Jacket 169,/fitted_images/169_extracted.png,Jacket,Top Wear,FashionStore,1169,29,Unisex,169_extracted.png
+170,Jacket 170,/fitted_images/170_extracted.png,Jacket,Top Wear,FashionStore,1170,30,Unisex,170_extracted.png
+171,Jacket 171,/fitted_images/171_extracted.png,Jacket,Top Wear,FashionStore,1171,31,Unisex,171_extracted.png
+172,Jacket 172,/fitted_images/172_extracted.png,Jacket,Top Wear,FashionStore,1172,32,Unisex,172_extracted.png
+173,Jacket 173,/fitted_images/173_extracted.png,Jacket,Top Wear,FashionStore,1173,33,Unisex,173_extracted.png
+174,Jacket 174,/fitted_images/174_extracted.png,Jacket,Top Wear,FashionStore,1174,34,Unisex,174_extracted.png
+175,Jacket 175,/fitted_images/175_extracted.png,Jacket,Top Wear,FashionStore,1175,35,Unisex,175_extracted.png
+176,Jacket 176,/fitted_images/176_extracted.png,Jacket,Top Wear,FashionStore,1176,36,Unisex,176_extracted.png
+177,Jacket 177,/fitted_images/177_extracted.png,Jacket,Top Wear,FashionStore,1177,37,Unisex,177_extracted.png
+178,Jacket 178,/fitted_images/178_extracted.png,Jacket,Top Wear,FashionStore,1178,38,Unisex,178_extracted.png
+179,Jacket 179,/fitted_images/179_extracted.png,Jacket,Top Wear,FashionStore,1179,39,Unisex,179_extracted.png
+180,Jacket 180,/fitted_images/180_extracted.png,Jacket,Top Wear,FashionStore,1180,40,Unisex,180_extracted.png
+181,Jacket 181,/fitted_images/181_extracted.png,Jacket,Top Wear,FashionStore,1181,41,Unisex,181_extracted.png
+182,Jacket 182,/fitted_images/182_extracted.png,Jacket,Top Wear,FashionStore,1182,42,Unisex,182_extracted.png
+183,Jacket 183,/fitted_images/183_extracted.png,Jacket,Top Wear,FashionStore,1183,43,Unisex,183_extracted.png
+184,Jacket 184,/fitted_images/184_extracted.png,Jacket,Top Wear,FashionStore,1184,44,Unisex,184_extracted.png
+185,Jacket 185,/fitted_images/185_extracted.png,Jacket,Top Wear,FashionStore,1185,45,Unisex,185_extracted.png
+186,Jacket 186,/fitted_images/186_extracted.png,Jacket,Top Wear,FashionStore,1186,46,Unisex,186_extracted.png
+187,Jacket 187,/fitted_images/187_extracted.png,Jacket,Top Wear,FashionStore,1187,47,Unisex,187_extracted.png
+188,Jacket 188,/fitted_images/188_extracted.png,Jacket,Top Wear,FashionStore,1188,48,Unisex,188_extracted.png
+189,Jacket 189,/fitted_images/189_extracted.png,Jacket,Top Wear,FashionStore,1189,49,Unisex,189_extracted.png
+190,Jacket 190,/fitted_images/190_extracted.png,Jacket,Top Wear,FashionStore,1190,50,Unisex,190_extracted.png
+191,Jacket 191,/fitted_images/191_extracted.png,Jacket,Top Wear,FashionStore,1191,51,Unisex,191_extracted.png
+192,Jacket 192,/fitted_images/192_extracted.png,Jacket,Top Wear,FashionStore,1192,52,Unisex,192_extracted.png
+193,Denim Jacket 193,/fitted_images/193_extracted.png,Denim Jacket,Top Wear,FashionStore,1193,53,Unisex,193_extracted.png
+194,Denim Jacket 194,/fitted_images/194_extracted.png,Denim Jacket,Top Wear,FashionStore,1194,54,Unisex,194_extracted.png
+195,Denim Jacket 195,/fitted_images/195_extracted.png,Denim Jacket,Top Wear,FashionStore,1195,55,Unisex,195_extracted.png
+196,Denim Jacket 196,/fitted_images/196_extracted.png,Denim Jacket,Top Wear,FashionStore,1196,56,Unisex,196_extracted.png
+197,Denim Jacket 197,/fitted_images/197_extracted.png,Denim Jacket,Top Wear,FashionStore,1197,57,Unisex,197_extracted.png
+198,Denim Jacket 198,/fitted_images/198_extracted.png,Denim Jacket,Top Wear,FashionStore,1198,58,Unisex,198_extracted.png
+199,Denim Jacket 199,/fitted_images/199_extracted.png,Denim Jacket,Top Wear,FashionStore,1199,59,Unisex,199_extracted.png
+200,Denim Jacket 200,/fitted_images/200_extracted.png,Denim Jacket,Top Wear,FashionStore,1200,60,Unisex,200_extracted.png
+201,Denim Jacket 201,/fitted_images/201_extracted.png,Denim Jacket,Top Wear,FashionStore,1201,61,Unisex,201_extracted.png
+202,Denim Jacket 202,/fitted_images/202_extracted.png,Denim Jacket,Top Wear,FashionStore,1202,62,Unisex,202_extracted.png
+203,Denim Jacket 203,/fitted_images/203_extracted.png,Denim Jacket,Top Wear,FashionStore,1203,63,Unisex,203_extracted.png
+204,Denim Jacket 204,/fitted_images/204_extracted.png,Denim Jacket,Top Wear,FashionStore,1204,64,Unisex,204_extracted.png
+205,Denim Jacket 205,/fitted_images/205_extracted.png,Denim Jacket,Top Wear,FashionStore,1205,65,Unisex,205_extracted.png
+206,Denim Jacket 206,/fitted_images/206_extracted.png,Denim Jacket,Top Wear,FashionStore,1206,66,Unisex,206_extracted.png
+207,Denim Jacket 207,/fitted_images/207_extracted.png,Denim Jacket,Top Wear,FashionStore,1207,67,Unisex,207_extracted.png
+208,Denim Jacket 208,/fitted_images/208_extracted.png,Denim Jacket,Top Wear,FashionStore,1208,68,Unisex,208_extracted.png
+209,Denim Jacket 209,/fitted_images/209_extracted.png,Denim Jacket,Top Wear,FashionStore,1209,69,Unisex,209_extracted.png
+210,Denim Jacket 210,/fitted_images/210_extracted.png,Denim Jacket,Top Wear,FashionStore,1210,0,Unisex,210_extracted.png
+211,Denim Jacket 211,/fitted_images/211_extracted.png,Denim Jacket,Top Wear,FashionStore,1211,1,Unisex,211_extracted.png
+212,Denim Jacket 212,/fitted_images/212_extracted.png,Denim Jacket,Top Wear,FashionStore,1212,2,Unisex,212_extracted.png
+213,Denim Jacket 213,/fitted_images/213_extracted.png,Denim Jacket,Top Wear,FashionStore,1213,3,Unisex,213_extracted.png
+214,Denim Jacket 214,/fitted_images/214_extracted.png,Denim Jacket,Top Wear,FashionStore,1214,4,Unisex,214_extracted.png
+215,Denim Jacket 215,/fitted_images/215_extracted.png,Denim Jacket,Top Wear,FashionStore,1215,5,Unisex,215_extracted.png
+216,Denim Jacket 216,/fitted_images/216_extracted.png,Denim Jacket,Top Wear,FashionStore,1216,6,Unisex,216_extracted.png
+217,Denim Jacket 217,/fitted_images/217_extracted.png,Denim Jacket,Top Wear,FashionStore,1217,7,Unisex,217_extracted.png
+218,Denim Jacket 218,/fitted_images/218_extracted.png,Denim Jacket,Top Wear,FashionStore,1218,8,Unisex,218_extracted.png
+219,Denim Jacket 219,/fitted_images/219_extracted.png,Denim Jacket,Top Wear,FashionStore,1219,9,Unisex,219_extracted.png
+220,Denim Jacket 220,/fitted_images/220_extracted.png,Denim Jacket,Top Wear,FashionStore,1220,10,Unisex,220_extracted.png
+221,Denim Jacket 221,/fitted_images/221_extracted.png,Denim Jacket,Top Wear,FashionStore,1221,11,Unisex,221_extracted.png
+222,Denim Jacket 222,/fitted_images/222_extracted.png,Denim Jacket,Top Wear,FashionStore,1222,12,Unisex,222_extracted.png
+223,Denim Jacket 223,/fitted_images/223_extracted.png,Denim Jacket,Top Wear,FashionStore,1223,13,Unisex,223_extracted.png
+224,Denim Jacket 224,/fitted_images/224_extracted.png,Denim Jacket,Top Wear,FashionStore,1224,14,Unisex,224_extracted.png
+225,Sports Jacket 225,/fitted_images/225_extracted.png,Sports Jacket,Top Wear,FashionStore,1225,15,Unisex,225_extracted.png
+226,Sports Jacket 226,/fitted_images/226_extracted.png,Sports Jacket,Top Wear,FashionStore,1226,16,Unisex,226_extracted.png
+227,Sports Jacket 227,/fitted_images/227_extracted.png,Sports Jacket,Top Wear,FashionStore,1227,17,Unisex,227_extracted.png
+228,Sports Jacket 228,/fitted_images/228_extracted.png,Sports Jacket,Top Wear,FashionStore,1228,18,Unisex,228_extracted.png
+229,Sports Jacket 229,/fitted_images/229_extracted.png,Sports Jacket,Top Wear,FashionStore,1229,19,Unisex,229_extracted.png
+230,Sports Jacket 230,/fitted_images/230_extracted.png,Sports Jacket,Top Wear,FashionStore,1230,20,Unisex,230_extracted.png
+231,Sports Jacket 231,/fitted_images/231_extracted.png,Sports Jacket,Top Wear,FashionStore,1231,21,Unisex,231_extracted.png
+232,Sports Jacket 232,/fitted_images/232_extracted.png,Sports Jacket,Top Wear,FashionStore,1232,22,Unisex,232_extracted.png
+233,Sports Jacket 233,/fitted_images/233_extracted.png,Sports Jacket,Top Wear,FashionStore,1233,23,Unisex,233_extracted.png
+234,Sports Jacket 234,/fitted_images/234_extracted.png,Sports Jacket,Top Wear,FashionStore,1234,24,Unisex,234_extracted.png
+235,Sports Jacket 235,/fitted_images/235_extracted.png,Sports Jacket,Top Wear,FashionStore,1235,25,Unisex,235_extracted.png
+236,Sports Jacket 236,/fitted_images/236_extracted.png,Sports Jacket,Top Wear,FashionStore,1236,26,Unisex,236_extracted.png
+237,Sports Jacket 237,/fitted_images/237_extracted.png,Sports Jacket,Top Wear,FashionStore,1237,27,Unisex,237_extracted.png
+238,Sports Jacket 238,/fitted_images/238_extracted.png,Sports Jacket,Top Wear,FashionStore,1238,28,Unisex,238_extracted.png
+239,Sports Jacket 239,/fitted_images/239_extracted.png,Sports Jacket,Top Wear,FashionStore,1239,29,Unisex,239_extracted.png
+240,Sports Jacket 240,/fitted_images/240_extracted.png,Sports Jacket,Top Wear,FashionStore,1240,30,Unisex,240_extracted.png
+241,Sports Jacket 241,/fitted_images/241_extracted.png,Sports Jacket,Top Wear,FashionStore,1241,31,Unisex,241_extracted.png
+242,Sports Jacket 242,/fitted_images/242_extracted.png,Sports Jacket,Top Wear,FashionStore,1242,32,Unisex,242_extracted.png
+243,Sports Jacket 243,/fitted_images/243_extracted.png,Sports Jacket,Top Wear,FashionStore,1243,33,Unisex,243_extracted.png
+244,Sports Jacket 244,/fitted_images/244_extracted.png,Sports Jacket,Top Wear,FashionStore,1244,34,Unisex,244_extracted.png
+245,Sports Jacket 245,/fitted_images/245_extracted.png,Sports Jacket,Top Wear,FashionStore,1245,35,Unisex,245_extracted.png
+246,Sports Jacket 246,/fitted_images/246_extracted.png,Sports Jacket,Top Wear,FashionStore,1246,36,Unisex,246_extracted.png
+247,Sports Jacket 247,/fitted_images/247_extracted.png,Sports Jacket,Top Wear,FashionStore,1247,37,Unisex,247_extracted.png
+248,Sports Jacket 248,/fitted_images/248_extracted.png,Sports Jacket,Top Wear,FashionStore,1248,38,Unisex,248_extracted.png
+249,Sports Jacket 249,/fitted_images/249_extracted.png,Sports Jacket,Top Wear,FashionStore,1249,39,Unisex,249_extracted.png
+250,Sports Jacket 250,/fitted_images/250_extracted.png,Sports Jacket,Top Wear,FashionStore,1250,40,Unisex,250_extracted.png
+251,Sports Jacket 251,/fitted_images/251_extracted.png,Sports Jacket,Top Wear,FashionStore,1251,41,Unisex,251_extracted.png
+252,Sports Jacket 252,/fitted_images/252_extracted.png,Sports Jacket,Top Wear,FashionStore,1252,42,Unisex,252_extracted.png
+253,Sports Jacket 253,/fitted_images/253_extracted.png,Sports Jacket,Top Wear,FashionStore,1253,43,Unisex,253_extracted.png
+254,Sports Jacket 254,/fitted_images/254_extracted.png,Sports Jacket,Top Wear,FashionStore,1254,44,Unisex,254_extracted.png
+255,Sports Jacket 255,/fitted_images/255_extracted.png,Sports Jacket,Top Wear,FashionStore,1255,45,Unisex,255_extracted.png
+256,Sports Jacket 256,/fitted_images/256_extracted.png,Sports Jacket,Top Wear,FashionStore,1256,46,Unisex,256_extracted.png
+257,Jeans 257,/fitted_images/257_extracted.png,Jeans,Bottom Wear,FashionStore,1257,47,Unisex,257_extracted.png
+258,Jeans 258,/fitted_images/258_extracted.png,Jeans,Bottom Wear,FashionStore,1258,48,Unisex,258_extracted.png
+259,Jeans 259,/fitted_images/259_extracted.png,Jeans,Bottom Wear,FashionStore,1259,49,Unisex,259_extracted.png
+260,Jeans 260,/fitted_images/260_extracted.png,Jeans,Bottom Wear,FashionStore,1260,50,Unisex,260_extracted.png
+261,Jeans 261,/fitted_images/261_extracted.png,Jeans,Bottom Wear,FashionStore,1261,51,Unisex,261_extracted.png
+262,Jeans 262,/fitted_images/262_extracted.png,Jeans,Bottom Wear,FashionStore,1262,52,Unisex,262_extracted.png
+263,Jeans 263,/fitted_images/263_extracted.png,Jeans,Bottom Wear,FashionStore,1263,53,Unisex,263_extracted.png
+264,Jeans 264,/fitted_images/264_extracted.png,Jeans,Bottom Wear,FashionStore,1264,54,Unisex,264_extracted.png
+265,Jeans 265,/fitted_images/265_extracted.png,Jeans,Bottom Wear,FashionStore,1265,55,Unisex,265_extracted.png
+266,Jeans 266,/fitted_images/266_extracted.png,Jeans,Bottom Wear,FashionStore,1266,56,Unisex,266_extracted.png
+267,Jeans 267,/fitted_images/267_extracted.png,Jeans,Bottom Wear,FashionStore,1267,57,Unisex,267_extracted.png
+268,Jeans 268,/fitted_images/268_extracted.png,Jeans,Bottom Wear,FashionStore,1268,58,Unisex,268_extracted.png
+269,Jeans 269,/fitted_images/269_extracted.png,Jeans,Bottom Wear,FashionStore,1269,59,Unisex,269_extracted.png
+270,Jeans 270,/fitted_images/270_extracted.png,Jeans,Bottom Wear,FashionStore,1270,60,Unisex,270_extracted.png
+271,Jeans 271,/fitted_images/271_extracted.png,Jeans,Bottom Wear,FashionStore,1271,61,Unisex,271_extracted.png
+272,Jeans 272,/fitted_images/272_extracted.png,Jeans,Bottom Wear,FashionStore,1272,62,Unisex,272_extracted.png
+273,Jeans 273,/fitted_images/273_extracted.png,Jeans,Bottom Wear,FashionStore,1273,63,Unisex,273_extracted.png
+274,Jeans 274,/fitted_images/274_extracted.png,Jeans,Bottom Wear,FashionStore,1274,64,Unisex,274_extracted.png
+275,Jeans 275,/fitted_images/275_extracted.png,Jeans,Bottom Wear,FashionStore,1275,65,Unisex,275_extracted.png
+276,Jeans 276,/fitted_images/276_extracted.png,Jeans,Bottom Wear,FashionStore,1276,66,Unisex,276_extracted.png
+277,Jeans 277,/fitted_images/277_extracted.png,Jeans,Bottom Wear,FashionStore,1277,67,Unisex,277_extracted.png
+278,Jeans 278,/fitted_images/278_extracted.png,Jeans,Bottom Wear,FashionStore,1278,68,Unisex,278_extracted.png
+279,Jeans 279,/fitted_images/279_extracted.png,Jeans,Bottom Wear,FashionStore,1279,69,Unisex,279_extracted.png
+280,Jeans 280,/fitted_images/280_extracted.png,Jeans,Bottom Wear,FashionStore,1280,0,Unisex,280_extracted.png
+281,Jeans 281,/fitted_images/281_extracted.png,Jeans,Bottom Wear,FashionStore,1281,1,Unisex,281_extracted.png
+282,Jeans 282,/fitted_images/282_extracted.png,Jeans,Bottom Wear,FashionStore,1282,2,Unisex,282_extracted.png
+283,Jeans 283,/fitted_images/283_extracted.png,Jeans,Bottom Wear,FashionStore,1283,3,Unisex,283_extracted.png
+284,Jeans 284,/fitted_images/284_extracted.png,Jeans,Bottom Wear,FashionStore,1284,4,Unisex,284_extracted.png
+285,Jeans 285,/fitted_images/285_extracted.png,Jeans,Bottom Wear,FashionStore,1285,5,Unisex,285_extracted.png
+286,Jeans 286,/fitted_images/286_extracted.png,Jeans,Bottom Wear,FashionStore,1286,6,Unisex,286_extracted.png
+287,Jeans 287,/fitted_images/287_extracted.png,Jeans,Bottom Wear,FashionStore,1287,7,Unisex,287_extracted.png
+288,Jeans 288,/fitted_images/288_extracted.png,Jeans,Bottom Wear,FashionStore,1288,8,Unisex,288_extracted.png
+289,T-Shirt 289,/fitted_images/289_extracted.png,T-Shirt,Top Wear,FashionStore,1289,9,Unisex,289_extracted.png
+290,T-Shirt 290,/fitted_images/290_extracted.png,T-Shirt,Top Wear,FashionStore,1290,10,Unisex,290_extracted.png
+291,T-Shirt 291,/fitted_images/291_extracted.png,T-Shirt,Top Wear,FashionStore,1291,11,Unisex,291_extracted.png
+292,T-Shirt 292,/fitted_images/292_extracted.png,T-Shirt,Top Wear,FashionStore,1292,12,Unisex,292_extracted.png
+293,T-Shirt 293,/fitted_images/293_extracted.png,T-Shirt,Top Wear,FashionStore,1293,13,Unisex,293_extracted.png
+294,T-Shirt 294,/fitted_images/294_extracted.png,T-Shirt,Top Wear,FashionStore,1294,14,Unisex,294_extracted.png
+295,T-Shirt 295,/fitted_images/295_extracted.png,T-Shirt,Top Wear,FashionStore,1295,15,Unisex,295_extracted.png
+296,T-Shirt 296,/fitted_images/296_extracted.png,T-Shirt,Top Wear,FashionStore,1296,16,Unisex,296_extracted.png
+297,T-Shirt 297,/fitted_images/297_extracted.png,T-Shirt,Top Wear,FashionStore,1297,17,Unisex,297_extracted.png
+298,T-Shirt 298,/fitted_images/298_extracted.png,T-Shirt,Top Wear,FashionStore,1298,18,Unisex,298_extracted.png
+299,T-Shirt 299,/fitted_images/299_extracted.png,T-Shirt,Top Wear,FashionStore,1299,19,Unisex,299_extracted.png
+300,T-Shirt 300,/fitted_images/300_extracted.png,T-Shirt,Top Wear,FashionStore,1300,20,Unisex,300_extracted.png
+301,T-Shirt 301,/fitted_images/301_extracted.png,T-Shirt,Top Wear,FashionStore,1301,21,Unisex,301_extracted.png
+302,T-Shirt 302,/fitted_images/302_extracted.png,T-Shirt,Top Wear,FashionStore,1302,22,Unisex,302_extracted.png
+303,T-Shirt 303,/fitted_images/303_extracted.png,T-Shirt,Top Wear,FashionStore,1303,23,Unisex,303_extracted.png
+304,T-Shirt 304,/fitted_images/304_extracted.png,T-Shirt,Top Wear,FashionStore,1304,24,Unisex,304_extracted.png
+305,T-Shirt 305,/fitted_images/305_extracted.png,T-Shirt,Top Wear,FashionStore,1305,25,Unisex,305_extracted.png
+306,T-Shirt 306,/fitted_images/306_extracted.png,T-Shirt,Top Wear,FashionStore,1306,26,Unisex,306_extracted.png
+307,T-Shirt 307,/fitted_images/307_extracted.png,T-Shirt,Top Wear,FashionStore,1307,27,Unisex,307_extracted.png
+308,T-Shirt 308,/fitted_images/308_extracted.png,T-Shirt,Top Wear,FashionStore,1308,28,Unisex,308_extracted.png
+309,T-Shirt 309,/fitted_images/309_extracted.png,T-Shirt,Top Wear,FashionStore,1309,29,Unisex,309_extracted.png
+310,T-Shirt 310,/fitted_images/310_extracted.png,T-Shirt,Top Wear,FashionStore,1310,30,Unisex,310_extracted.png
+311,T-Shirt 311,/fitted_images/311_extracted.png,T-Shirt,Top Wear,FashionStore,1311,31,Unisex,311_extracted.png
+312,T-Shirt 312,/fitted_images/312_extracted.png,T-Shirt,Top Wear,FashionStore,1312,32,Unisex,312_extracted.png
+313,T-Shirt 313,/fitted_images/313_extracted.png,T-Shirt,Top Wear,FashionStore,1313,33,Unisex,313_extracted.png
+314,T-Shirt 314,/fitted_images/314_extracted.png,T-Shirt,Top Wear,FashionStore,1314,34,Unisex,314_extracted.png
+315,T-Shirt 315,/fitted_images/315_extracted.png,T-Shirt,Top Wear,FashionStore,1315,35,Unisex,315_extracted.png
+316,T-Shirt 316,/fitted_images/316_extracted.png,T-Shirt,Top Wear,FashionStore,1316,36,Unisex,316_extracted.png
+317,T-Shirt 317,/fitted_images/317_extracted.png,T-Shirt,Top Wear,FashionStore,1317,37,Unisex,317_extracted.png
+318,T-Shirt 318,/fitted_images/318_extracted.png,T-Shirt,Top Wear,FashionStore,1318,38,Unisex,318_extracted.png
+319,T-Shirt 319,/fitted_images/319_extracted.png,T-Shirt,Top Wear,FashionStore,1319,39,Unisex,319_extracted.png
+320,T-Shirt 320,/fitted_images/320_extracted.png,T-Shirt,Top Wear,FashionStore,1320,40,Unisex,320_extracted.png
+321,Shirt 321,/fitted_images/321_extracted.png,Shirt,Top Wear,FashionStore,1321,41,Unisex,321_extracted.png
+322,Shirt 322,/fitted_images/322_extracted.png,Shirt,Top Wear,FashionStore,1322,42,Unisex,322_extracted.png
+323,Shirt 323,/fitted_images/323_extracted.png,Shirt,Top Wear,FashionStore,1323,43,Unisex,323_extracted.png
+324,Shirt 324,/fitted_images/324_extracted.png,Shirt,Top Wear,FashionStore,1324,44,Unisex,324_extracted.png
+325,Shirt 325,/fitted_images/325_extracted.png,Shirt,Top Wear,FashionStore,1325,45,Unisex,325_extracted.png
+326,Shirt 326,/fitted_images/326_extracted.png,Shirt,Top Wear,FashionStore,1326,46,Unisex,326_extracted.png
+327,Shirt 327,/fitted_images/327_extracted.png,Shirt,Top Wear,FashionStore,1327,47,Unisex,327_extracted.png
+328,Shirt 328,/fitted_images/328_extracted.png,Shirt,Top Wear,FashionStore,1328,48,Unisex,328_extracted.png
+329,Shirt 329,/fitted_images/329_extracted.png,Shirt,Top Wear,FashionStore,1329,49,Unisex,329_extracted.png
+330,Shirt 330,/fitted_images/330_extracted.png,Shirt,Top Wear,FashionStore,1330,50,Unisex,330_extracted.png
+331,Shirt 331,/fitted_images/331_extracted.png,Shirt,Top Wear,FashionStore,1331,51,Unisex,331_extracted.png
+332,Shirt 332,/fitted_images/332_extracted.png,Shirt,Top Wear,FashionStore,1332,52,Unisex,332_extracted.png
+333,Shirt 333,/fitted_images/333_extracted.png,Shirt,Top Wear,FashionStore,1333,53,Unisex,333_extracted.png
+334,Shirt 334,/fitted_images/334_extracted.png,Shirt,Top Wear,FashionStore,1334,54,Unisex,334_extracted.png
+335,Shirt 335,/fitted_images/335_extracted.png,Shirt,Top Wear,FashionStore,1335,55,Unisex,335_extracted.png
+336,Shirt 336,/fitted_images/336_extracted.png,Shirt,Top Wear,FashionStore,1336,56,Unisex,336_extracted.png
+337,Shirt 337,/fitted_images/337_extracted.png,Shirt,Top Wear,FashionStore,1337,57,Unisex,337_extracted.png
+338,Shirt 338,/fitted_images/338_extracted.png,Shirt,Top Wear,FashionStore,1338,58,Unisex,338_extracted.png
+339,Shirt 339,/fitted_images/339_extracted.png,Shirt,Top Wear,FashionStore,1339,59,Unisex,339_extracted.png
+340,Shirt 340,/fitted_images/340_extracted.png,Shirt,Top Wear,FashionStore,1340,60,Unisex,340_extracted.png
+341,Shirt 341,/fitted_images/341_extracted.png,Shirt,Top Wear,FashionStore,1341,61,Unisex,341_extracted.png
+342,Shirt 342,/fitted_images/342_extracted.png,Shirt,Top Wear,FashionStore,1342,62,Unisex,342_extracted.png
+343,Shirt 343,/fitted_images/343_extracted.png,Shirt,Top Wear,FashionStore,1343,63,Unisex,343_extracted.png
+344,Shirt 344,/fitted_images/344_extracted.png,Shirt,Top Wear,FashionStore,1344,64,Unisex,344_extracted.png
+345,Shirt 345,/fitted_images/345_extracted.png,Shirt,Top Wear,FashionStore,1345,65,Unisex,345_extracted.png
+346,Shirt 346,/fitted_images/346_extracted.png,Shirt,Top Wear,FashionStore,1346,66,Unisex,346_extracted.png
+347,Shirt 347,/fitted_images/347_extracted.png,Shirt,Top Wear,FashionStore,1347,67,Unisex,347_extracted.png
+348,Shirt 348,/fitted_images/348_extracted.png,Shirt,Top Wear,FashionStore,1348,68,Unisex,348_extracted.png
+349,Shirt 349,/fitted_images/349_extracted.png,Shirt,Top Wear,FashionStore,1349,69,Unisex,349_extracted.png
+350,Shirt 350,/fitted_images/350_extracted.png,Shirt,Top Wear,FashionStore,1350,0,Unisex,350_extracted.png
+351,Shirt 351,/fitted_images/351_extracted.png,Shirt,Top Wear,FashionStore,1351,1,Unisex,351_extracted.png
+352,Shirt 352,/fitted_images/352_extracted.png,Shirt,Top Wear,FashionStore,1352,2,Unisex,352_extracted.png
+353,Coat 353,/fitted_images/353_extracted.png,Coat,Top Wear,FashionStore,1353,3,Unisex,353_extracted.png
+354,Coat 354,/fitted_images/354_extracted.png,Coat,Top Wear,FashionStore,1354,4,Unisex,354_extracted.png
+355,Coat 355,/fitted_images/355_extracted.png,Coat,Top Wear,FashionStore,1355,5,Unisex,355_extracted.png
+356,Coat 356,/fitted_images/356_extracted.png,Coat,Top Wear,FashionStore,1356,6,Unisex,356_extracted.png
+357,Coat 357,/fitted_images/357_extracted.png,Coat,Top Wear,FashionStore,1357,7,Unisex,357_extracted.png
+358,Coat 358,/fitted_images/358_extracted.png,Coat,Top Wear,FashionStore,1358,8,Unisex,358_extracted.png
+359,Coat 359,/fitted_images/359_extracted.png,Coat,Top Wear,FashionStore,1359,9,Unisex,359_extracted.png
+360,Coat 360,/fitted_images/360_extracted.png,Coat,Top Wear,FashionStore,1360,10,Unisex,360_extracted.png
+361,Coat 361,/fitted_images/361_extracted.png,Coat,Top Wear,FashionStore,1361,11,Unisex,361_extracted.png
+362,Coat 362,/fitted_images/362_extracted.png,Coat,Top Wear,FashionStore,1362,12,Unisex,362_extracted.png
+363,Coat 363,/fitted_images/363_extracted.png,Coat,Top Wear,FashionStore,1363,13,Unisex,363_extracted.png
+364,Coat 364,/fitted_images/364_extracted.png,Coat,Top Wear,FashionStore,1364,14,Unisex,364_extracted.png
+365,Coat 365,/fitted_images/365_extracted.png,Coat,Top Wear,FashionStore,1365,15,Unisex,365_extracted.png
+366,Coat 366,/fitted_images/366_extracted.png,Coat,Top Wear,FashionStore,1366,16,Unisex,366_extracted.png
+367,Coat 367,/fitted_images/367_extracted.png,Coat,Top Wear,FashionStore,1367,17,Unisex,367_extracted.png
+368,Coat 368,/fitted_images/368_extracted.png,Coat,Top Wear,FashionStore,1368,18,Unisex,368_extracted.png
+369,Coat 369,/fitted_images/369_extracted.png,Coat,Top Wear,FashionStore,1369,19,Unisex,369_extracted.png
+370,Coat 370,/fitted_images/370_extracted.png,Coat,Top Wear,FashionStore,1370,20,Unisex,370_extracted.png
+371,Coat 371,/fitted_images/371_extracted.png,Coat,Top Wear,FashionStore,1371,21,Unisex,371_extracted.png
+372,Coat 372,/fitted_images/372_extracted.png,Coat,Top Wear,FashionStore,1372,22,Unisex,372_extracted.png
+373,Coat 373,/fitted_images/373_extracted.png,Coat,Top Wear,FashionStore,1373,23,Unisex,373_extracted.png
+374,Coat 374,/fitted_images/374_extracted.png,Coat,Top Wear,FashionStore,1374,24,Unisex,374_extracted.png
+375,Coat 375,/fitted_images/375_extracted.png,Coat,Top Wear,FashionStore,1375,25,Unisex,375_extracted.png
+376,Coat 376,/fitted_images/376_extracted.png,Coat,Top Wear,FashionStore,1376,26,Unisex,376_extracted.png
+377,Coat 377,/fitted_images/377_extracted.png,Coat,Top Wear,FashionStore,1377,27,Unisex,377_extracted.png
+378,Coat 378,/fitted_images/378_extracted.png,Coat,Top Wear,FashionStore,1378,28,Unisex,378_extracted.png
+379,Coat 379,/fitted_images/379_extracted.png,Coat,Top Wear,FashionStore,1379,29,Unisex,379_extracted.png
+380,Coat 380,/fitted_images/380_extracted.png,Coat,Top Wear,FashionStore,1380,30,Unisex,380_extracted.png
+381,Coat 381,/fitted_images/381_extracted.png,Coat,Top Wear,FashionStore,1381,31,Unisex,381_extracted.png
+382,Coat 382,/fitted_images/382_extracted.png,Coat,Top Wear,FashionStore,1382,32,Unisex,382_extracted.png
+383,Coat 383,/fitted_images/383_extracted.png,Coat,Top Wear,FashionStore,1383,33,Unisex,383_extracted.png
+384,Coat 384,/fitted_images/384_extracted.png,Coat,Top Wear,FashionStore,1384,34,Unisex,384_extracted.png
+385,Polo 385,/fitted_images/385_extracted.png,Polo,Top Wear,FashionStore,1385,35,Unisex,385_extracted.png
+386,Polo 386,/fitted_images/386_extracted.png,Polo,Top Wear,FashionStore,1386,36,Unisex,386_extracted.png
+387,Polo 387,/fitted_images/387_extracted.png,Polo,Top Wear,FashionStore,1387,37,Unisex,387_extracted.png
+388,Polo 388,/fitted_images/388_extracted.png,Polo,Top Wear,FashionStore,1388,38,Unisex,388_extracted.png
+389,Polo 389,/fitted_images/389_extracted.png,Polo,Top Wear,FashionStore,1389,39,Unisex,389_extracted.png
+390,Polo 390,/fitted_images/390_extracted.png,Polo,Top Wear,FashionStore,1390,40,Unisex,390_extracted.png
+391,Polo 391,/fitted_images/391_extracted.png,Polo,Top Wear,FashionStore,1391,41,Unisex,391_extracted.png
+392,Polo 392,/fitted_images/392_extracted.png,Polo,Top Wear,FashionStore,1392,42,Unisex,392_extracted.png
+393,Polo 393,/fitted_images/393_extracted.png,Polo,Top Wear,FashionStore,1393,43,Unisex,393_extracted.png
+394,Polo 394,/fitted_images/394_extracted.png,Polo,Top Wear,FashionStore,1394,44,Unisex,394_extracted.png
+395,Polo 395,/fitted_images/395_extracted.png,Polo,Top Wear,FashionStore,1395,45,Unisex,395_extracted.png
+396,Polo 396,/fitted_images/396_extracted.png,Polo,Top Wear,FashionStore,1396,46,Unisex,396_extracted.png
+397,Polo 397,/fitted_images/397_extracted.png,Polo,Top Wear,FashionStore,1397,47,Unisex,397_extracted.png
+398,Polo 398,/fitted_images/398_extracted.png,Polo,Top Wear,FashionStore,1398,48,Unisex,398_extracted.png
+399,Polo 399,/fitted_images/399_extracted.png,Polo,Top Wear,FashionStore,1399,49,Unisex,399_extracted.png
+400,Polo 400,/fitted_images/400_extracted.png,Polo,Top Wear,FashionStore,1400,50,Unisex,400_extracted.png
+401,Polo 401,/fitted_images/401_extracted.png,Polo,Top Wear,FashionStore,1401,51,Unisex,401_extracted.png
+402,Polo 402,/fitted_images/402_extracted.png,Polo,Top Wear,FashionStore,1402,52,Unisex,402_extracted.png
+403,Polo 403,/fitted_images/403_extracted.png,Polo,Top Wear,FashionStore,1403,53,Unisex,403_extracted.png
+404,Polo 404,/fitted_images/404_extracted.png,Polo,Top Wear,FashionStore,1404,54,Unisex,404_extracted.png
+405,Polo 405,/fitted_images/405_extracted.png,Polo,Top Wear,FashionStore,1405,55,Unisex,405_extracted.png
+406,Polo 406,/fitted_images/406_extracted.png,Polo,Top Wear,FashionStore,1406,56,Unisex,406_extracted.png
+407,Polo 407,/fitted_images/407_extracted.png,Polo,Top Wear,FashionStore,1407,57,Unisex,407_extracted.png
+408,Polo 408,/fitted_images/408_extracted.png,Polo,Top Wear,FashionStore,1408,58,Unisex,408_extracted.png
+409,Polo 409,/fitted_images/409_extracted.png,Polo,Top Wear,FashionStore,1409,59,Unisex,409_extracted.png
+410,Polo 410,/fitted_images/410_extracted.png,Polo,Top Wear,FashionStore,1410,60,Unisex,410_extracted.png
+411,Polo 411,/fitted_images/411_extracted.png,Polo,Top Wear,FashionStore,1411,61,Unisex,411_extracted.png
+412,Polo 412,/fitted_images/412_extracted.png,Polo,Top Wear,FashionStore,1412,62,Unisex,412_extracted.png
+413,Polo 413,/fitted_images/413_extracted.png,Polo,Top Wear,FashionStore,1413,63,Unisex,413_extracted.png
+414,Polo 414,/fitted_images/414_extracted.png,Polo,Top Wear,FashionStore,1414,64,Unisex,414_extracted.png
+415,Polo 415,/fitted_images/415_extracted.png,Polo,Top Wear,FashionStore,1415,65,Unisex,415_extracted.png
+416,Polo 416,/fitted_images/416_extracted.png,Polo,Top Wear,FashionStore,1416,66,Unisex,416_extracted.png
+417,Skirt 417,/fitted_images/417_extracted.png,Skirt,Bottom Wear,FashionStore,1417,67,Unisex,417_extracted.png
+418,Skirt 418,/fitted_images/418_extracted.png,Skirt,Bottom Wear,FashionStore,1418,68,Unisex,418_extracted.png
+419,Skirt 419,/fitted_images/419_extracted.png,Skirt,Bottom Wear,FashionStore,1419,69,Unisex,419_extracted.png
+420,Skirt 420,/fitted_images/420_extracted.png,Skirt,Bottom Wear,FashionStore,1420,0,Unisex,420_extracted.png
+421,Skirt 421,/fitted_images/421_extracted.png,Skirt,Bottom Wear,FashionStore,1421,1,Unisex,421_extracted.png
+422,Skirt 422,/fitted_images/422_extracted.png,Skirt,Bottom Wear,FashionStore,1422,2,Unisex,422_extracted.png
+423,Skirt 423,/fitted_images/423_extracted.png,Skirt,Bottom Wear,FashionStore,1423,3,Unisex,423_extracted.png
+424,Skirt 424,/fitted_images/424_extracted.png,Skirt,Bottom Wear,FashionStore,1424,4,Unisex,424_extracted.png
+425,Skirt 425,/fitted_images/425_extracted.png,Skirt,Bottom Wear,FashionStore,1425,5,Unisex,425_extracted.png
+426,Skirt 426,/fitted_images/426_extracted.png,Skirt,Bottom Wear,FashionStore,1426,6,Unisex,426_extracted.png
+427,Skirt 427,/fitted_images/427_extracted.png,Skirt,Bottom Wear,FashionStore,1427,7,Unisex,427_extracted.png
+428,Skirt 428,/fitted_images/428_extracted.png,Skirt,Bottom Wear,FashionStore,1428,8,Unisex,428_extracted.png
+429,Skirt 429,/fitted_images/429_extracted.png,Skirt,Bottom Wear,FashionStore,1429,9,Unisex,429_extracted.png
+430,Skirt 430,/fitted_images/430_extracted.png,Skirt,Bottom Wear,FashionStore,1430,10,Unisex,430_extracted.png
+431,Skirt 431,/fitted_images/431_extracted.png,Skirt,Bottom Wear,FashionStore,1431,11,Unisex,431_extracted.png
+432,Skirt 432,/fitted_images/432_extracted.png,Skirt,Bottom Wear,FashionStore,1432,12,Unisex,432_extracted.png
+433,Skirt 433,/fitted_images/433_extracted.png,Skirt,Bottom Wear,FashionStore,1433,13,Unisex,433_extracted.png
+434,Skirt 434,/fitted_images/434_extracted.png,Skirt,Bottom Wear,FashionStore,1434,14,Unisex,434_extracted.png
+435,Skirt 435,/fitted_images/435_extracted.png,Skirt,Bottom Wear,FashionStore,1435,15,Unisex,435_extracted.png
+436,Skirt 436,/fitted_images/436_extracted.png,Skirt,Bottom Wear,FashionStore,1436,16,Unisex,436_extracted.png
+437,Skirt 437,/fitted_images/437_extracted.png,Skirt,Bottom Wear,FashionStore,1437,17,Unisex,437_extracted.png
+438,Skirt 438,/fitted_images/438_extracted.png,Skirt,Bottom Wear,FashionStore,1438,18,Unisex,438_extracted.png
+439,Skirt 439,/fitted_images/439_extracted.png,Skirt,Bottom Wear,FashionStore,1439,19,Unisex,439_extracted.png
+440,Skirt 440,/fitted_images/440_extracted.png,Skirt,Bottom Wear,FashionStore,1440,20,Unisex,440_extracted.png
+441,Skirt 441,/fitted_images/441_extracted.png,Skirt,Bottom Wear,FashionStore,1441,21,Unisex,441_extracted.png
+442,Skirt 442,/fitted_images/442_extracted.png,Skirt,Bottom Wear,FashionStore,1442,22,Unisex,442_extracted.png
+443,Skirt 443,/fitted_images/443_extracted.png,Skirt,Bottom Wear,FashionStore,1443,23,Unisex,443_extracted.png
+444,Skirt 444,/fitted_images/444_extracted.png,Skirt,Bottom Wear,FashionStore,1444,24,Unisex,444_extracted.png
+445,Skirt 445,/fitted_images/445_extracted.png,Skirt,Bottom Wear,FashionStore,1445,25,Unisex,445_extracted.png
+446,Skirt 446,/fitted_images/446_extracted.png,Skirt,Bottom Wear,FashionStore,1446,26,Unisex,446_extracted.png
+447,Skirt 447,/fitted_images/447_extracted.png,Skirt,Bottom Wear,FashionStore,1447,27,Unisex,447_extracted.png
+448,Skirt 448,/fitted_images/448_extracted.png,Skirt,Bottom Wear,FashionStore,1448,28,Unisex,448_extracted.png
+449,Sweater 449,/fitted_images/449_extracted.png,Sweater,Top Wear,FashionStore,1449,29,Unisex,449_extracted.png
+450,Sweater 450,/fitted_images/450_extracted.png,Sweater,Top Wear,FashionStore,1450,30,Unisex,450_extracted.png
+451,Sweater 451,/fitted_images/451_extracted.png,Sweater,Top Wear,FashionStore,1451,31,Unisex,451_extracted.png
+452,Sweater 452,/fitted_images/452_extracted.png,Sweater,Top Wear,FashionStore,1452,32,Unisex,452_extracted.png
+453,Sweater 453,/fitted_images/453_extracted.png,Sweater,Top Wear,FashionStore,1453,33,Unisex,453_extracted.png
+454,Sweater 454,/fitted_images/454_extracted.png,Sweater,Top Wear,FashionStore,1454,34,Unisex,454_extracted.png
+455,Sweater 455,/fitted_images/455_extracted.png,Sweater,Top Wear,FashionStore,1455,35,Unisex,455_extracted.png
+456,Sweater 456,/fitted_images/456_extracted.png,Sweater,Top Wear,FashionStore,1456,36,Unisex,456_extracted.png
+457,Sweater 457,/fitted_images/457_extracted.png,Sweater,Top Wear,FashionStore,1457,37,Unisex,457_extracted.png
+458,Sweater 458,/fitted_images/458_extracted.png,Sweater,Top Wear,FashionStore,1458,38,Unisex,458_extracted.png
+459,Sweater 459,/fitted_images/459_extracted.png,Sweater,Top Wear,FashionStore,1459,39,Unisex,459_extracted.png
+460,Sweater 460,/fitted_images/460_extracted.png,Sweater,Top Wear,FashionStore,1460,40,Unisex,460_extracted.png
+461,Sweater 461,/fitted_images/461_extracted.png,Sweater,Top Wear,FashionStore,1461,41,Unisex,461_extracted.png
+462,Sweater 462,/fitted_images/462_extracted.png,Sweater,Top Wear,FashionStore,1462,42,Unisex,462_extracted.png
+463,Sweater 463,/fitted_images/463_extracted.png,Sweater,Top Wear,FashionStore,1463,43,Unisex,463_extracted.png
+464,Sweater 464,/fitted_images/464_extracted.png,Sweater,Top Wear,FashionStore,1464,44,Unisex,464_extracted.png
+465,Sweater 465,/fitted_images/465_extracted.png,Sweater,Top Wear,FashionStore,1465,45,Unisex,465_extracted.png
+466,Sweater 466,/fitted_images/466_extracted.png,Sweater,Top Wear,FashionStore,1466,46,Unisex,466_extracted.png
+467,Sweater 467,/fitted_images/467_extracted.png,Sweater,Top Wear,FashionStore,1467,47,Unisex,467_extracted.png
+468,Sweater 468,/fitted_images/468_extracted.png,Sweater,Top Wear,FashionStore,1468,48,Unisex,468_extracted.png
+469,Sweater 469,/fitted_images/469_extracted.png,Sweater,Top Wear,FashionStore,1469,49,Unisex,469_extracted.png
+470,Sweater 470,/fitted_images/470_extracted.png,Sweater,Top Wear,FashionStore,1470,50,Unisex,470_extracted.png
+471,Sweater 471,/fitted_images/471_extracted.png,Sweater,Top Wear,FashionStore,1471,51,Unisex,471_extracted.png
+472,Sweater 472,/fitted_images/472_extracted.png,Sweater,Top Wear,FashionStore,1472,52,Unisex,472_extracted.png
+473,Sweater 473,/fitted_images/473_extracted.png,Sweater,Top Wear,FashionStore,1473,53,Unisex,473_extracted.png
+474,Sweater 474,/fitted_images/474_extracted.png,Sweater,Top Wear,FashionStore,1474,54,Unisex,474_extracted.png
+475,Sweater 475,/fitted_images/475_extracted.png,Sweater,Top Wear,FashionStore,1475,55,Unisex,475_extracted.png
+476,Sweater 476,/fitted_images/476_extracted.png,Sweater,Top Wear,FashionStore,1476,56,Unisex,476_extracted.png
+477,Sweater 477,/fitted_images/477_extracted.png,Sweater,Top Wear,FashionStore,1477,57,Unisex,477_extracted.png
+478,Sweater 478,/fitted_images/478_extracted.png,Sweater,Top Wear,FashionStore,1478,58,Unisex,478_extracted.png
+479,Sweater 479,/fitted_images/479_extracted.png,Sweater,Top Wear,FashionStore,1479,59,Unisex,479_extracted.png
+480,Sweater 480,/fitted_images/480_extracted.png,Sweater,Top Wear,FashionStore,1480,60,Unisex,480_extracted.png

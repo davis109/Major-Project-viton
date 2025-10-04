@@ -43,7 +43,7 @@ export default function Header() {
             </motion.a>
             <motion.a
               whileHover={{ y: -2 }}
-              href="#"
+              href="/collections"
               className="text-neutral-700 hover:text-primary-600 font-semibold transition-colors duration-200"
             >
               Collections

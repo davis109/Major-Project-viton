@@ -6,17 +6,23 @@ EXTRACTED_CLOTH_IMAGES_FOLDER = os.getenv("EXTRACTED_CLOTH_IMAGES_FOLDER")
 
 # Load data from SQLite database instead of CSV to get updated image URLs
 def load_data_from_db():
-    conn = sqlite3.connect('myntra.db')
+    # Use absolute path to ensure we find the database
+    db_path = os.path.join(os.path.dirname(__file__), 'myntra.db')
+    if not os.path.exists(db_path):
+        raise FileNotFoundError(f"Database not found at {db_path}")
+    conn = sqlite3.connect(db_path)
     df = pd.read_sql_query("SELECT * FROM products", conn)
     conn.close()
     return df
 
 def filter_available_products(df):
-    """Filter products to only include those with available image files"""
+    """Filter products to only include   those with available image files"""
     def check_image_exists(extract_images):
         if pd.isna(extract_images):
             return False
-        image_path = os.path.join('fitted_images', extract_images)
+        # Use absolute path to fitted_images folder
+        images_dir = os.path.join(os.path.dirname(__file__), 'fitted_images')
+        image_path = os.path.join(images_dir, extract_images)
         return os.path.exists(image_path)
     
     # Filter out products without valid image files
@@ -32,10 +38,17 @@ df = load_data_from_db()
 df = filter_available_products(df)  # Only include products with available images
 df.dropna(inplace=True)
 
+# Add missing columns with default values
+import datetime
+if 'date' not in df.columns:
+    df['date'] = datetime.datetime.now()  # Use current date for all products
+if 'rating' not in df.columns:
+    df['rating'] = 4.2  # Default rating
+if 'quantity' not in df.columns:
+    df['quantity'] = 100  # Default quantity
+
 # Update the 'extract_images' column
 # df['extract_images'] = df['extract_images'].apply(lambda x: os.path.join(EXTRACTED_CLOTH_IMAGES_FOLDER, x))
-
-df['date'] = pd.to_datetime(df['date'], format='%m/%d/%Y')
 
 # Ensure all required columns are present
 required_columns = ['product_id', 'price', 'rating', 'subcategory', 'img', 'name', 'main_category', 'target_audience', 'date', 'quantity', 'extract_images', 'seller', 'discount']

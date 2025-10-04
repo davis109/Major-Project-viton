@@ -35,6 +35,7 @@ interface VirtualTryOnProps {
   tryOnResult: TryOnResult | null
   isLoading: boolean
   onGetRecommendations?: (product: Product) => Promise<void>
+  onTryOn?: (product: Product) => Promise<void>
 }
 
 export default function VirtualTryOn({
@@ -43,6 +44,7 @@ export default function VirtualTryOn({
   tryOnResult,
   isLoading,
   onGetRecommendations,
+  onTryOn,
 }: VirtualTryOnProps) {
   return (
     <div className="p-6">
@@ -147,22 +149,87 @@ export default function VirtualTryOn({
                 </motion.button>
               </motion.div>
             ) : !isLoading && selectedProduct ? (
-              <div className="w-full h-full flex items-center justify-center">
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Sparkles className="text-primary-500" size={32} />
-                  </div>
-                  <p className="text-neutral-600 font-semibold mb-2">Ready to try on</p>
-                  <p className="text-sm text-neutral-500">{selectedProduct.name}</p>
+              <div className="relative w-full h-full">
+                <Image
+                  src={`http://localhost:8001${selectedProduct.img}`}
+                  alt={selectedProduct.name}
+                  width={300}
+                  height={400}
+                  className="w-full h-full object-cover"
+                  onError={(e: any) => {
+                    // If main image fails, try the extract_images path
+                    const extractPath = `/fitted_images/${selectedProduct.extract_images}`
+                    if (e.currentTarget.src !== `http://localhost:8001${extractPath}`) {
+                      e.currentTarget.src = `http://localhost:8001${extractPath}`
+                    } else {
+                      // If both fail, show placeholder
+                      e.currentTarget.style.display = 'none'
+                      e.currentTarget.parentElement.innerHTML = `
+                        <div class="w-full h-full flex items-center justify-center bg-neutral-100">
+                          <div class="text-center">
+                            <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                              <svg class="w-8 h-8 text-primary-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                              </svg>
+                            </div>
+                            <p class="text-neutral-600 font-semibold mb-1">Ready to try on</p>
+                            <p class="text-sm text-neutral-500">${selectedProduct.name}</p>
+                          </div>
+                        </div>
+                      `
+                    }
+                  }}
+                />
+                
+                {/* Ready to Try-On Badge */}
+                <div className="absolute top-4 right-4 bg-primary-500 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg">
+                  Ready to Try On
+                </div>
+                
+                {/* Try-On Button */}
+                <div className="absolute bottom-4 left-4 right-4 space-y-2">
+                  {!userImage && (
+                    <div className="bg-amber-100 border border-amber-300 text-amber-800 px-3 py-2 rounded-lg text-xs text-center">
+                      👆 Upload your photo first to try on this item
+                    </div>
+                  )}
+                  <button
+                    onClick={() => onTryOn && onTryOn(selectedProduct)}
+                    disabled={!userImage || isLoading}
+                    className={`w-full py-3 px-4 rounded-lg font-semibold text-sm transition-all duration-200 ${
+                      userImage && !isLoading
+                        ? 'bg-primary-600 hover:bg-primary-700 text-white shadow-lg transform hover:scale-105'
+                        : 'bg-neutral-400 text-neutral-200 cursor-not-allowed'
+                    }`}
+                  >
+                    {!userImage 
+                      ? '📸 Upload Photo First' 
+                      : isLoading 
+                      ? '⏳ Creating Virtual Try-On...' 
+                      : '✨ Try On This Item'
+                    }
+                  </button>
+                </div>
+
+                {/* Product Name Overlay */}
+                <div className="absolute top-4 left-4 right-4 bg-black bg-opacity-60 text-white p-3 rounded-lg">
+                  <p className="font-semibold">{selectedProduct.name}</p>
+                  <p className="text-xs opacity-90 capitalize">{selectedProduct.subcategory}</p>
                 </div>
               </div>
             ) : (
-              <div className="w-full h-full flex items-center justify-center">
+              <div className="w-full h-full flex items-center justify-center p-6">
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-neutral-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Sparkles className="text-neutral-400" size={32} />
+                  <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span className="text-red-500 text-2xl">⚠️</span>
                   </div>
-                  <p className="text-neutral-500">Select an item to see how it looks on you</p>
+                  <p className="text-red-600 font-semibold mb-2">Virtual Try-On Server Required</p>
+                  <p className="text-sm text-neutral-600 mb-4">
+                    To see how clothes look on YOUR uploaded photo, the backend server needs to be running.
+                  </p>
+                  <p className="text-xs text-neutral-500">
+                    Without the server, you'll see incorrect results using different people's photos.
+                  </p>
                 </div>
               </div>
             )}
@@ -180,11 +247,17 @@ export default function VirtualTryOn({
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 bg-white rounded-lg overflow-hidden border">
               <Image
-                src={selectedProduct.img}
+                src={`http://localhost:8001${selectedProduct.img}`}
                 alt={selectedProduct.name}
                 width={64}
                 height={64}
                 className="w-full h-full object-cover"
+                onError={(e: any) => {
+                  const extractPath = `/fitted_images/${selectedProduct.extract_images}`
+                  if (e.currentTarget.src !== `http://localhost:8001${extractPath}`) {
+                    e.currentTarget.src = `http://localhost:8001${extractPath}`
+                  }
+                }}
               />
             </div>
             <div className="flex-1">

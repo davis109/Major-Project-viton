@@ -50,6 +50,10 @@ export default function Home() {
       const response = await fetch('http://localhost:8001/get_myntra_data')
       if (response.ok) {
         const data = await response.json()
+        console.log('API Response:', data.length, 'items')
+        console.log('First 10 items:', data.slice(0, 10).map((p: Product) => ({ name: p.name, category: p.subcategory })))
+        const categories = data.map((p: Product) => p.subcategory).filter((c: string, i: number, arr: string[]) => arr.indexOf(c) === i)
+        console.log('Unique categories found:', categories.slice(0, 10))
         setProducts(data)
       } else {
         toast.error('Failed to load products')
@@ -65,6 +69,30 @@ export default function Home() {
   useEffect(() => {
     fetchProducts()
   }, [fetchProducts])
+
+  // Check for selected product from collections page
+  useEffect(() => {
+    const selectedProductData = localStorage.getItem('selectedProduct')
+    if (selectedProductData) {
+      try {
+        const product = JSON.parse(selectedProductData)
+        setSelectedProduct(product)
+        localStorage.removeItem('selectedProduct') // Clean up
+        
+        // Auto-scroll to the try-on section
+        setTimeout(() => {
+          const tryOnSection = document.getElementById('try-on-section')
+          if (tryOnSection) {
+            tryOnSection.scrollIntoView({ behavior: 'smooth' })
+          }
+        }, 500)
+        
+        toast.success(`${product.name} selected for virtual try-on!`)
+      } catch (error) {
+        console.error('Error parsing selected product:', error)
+      }
+    }
+  }, [])
 
   // Handle user image upload
   const handleImageUpload = useCallback(async (file: File) => {
@@ -175,8 +203,8 @@ export default function Home() {
         throw new Error('Try-on failed')
       }
     } catch (error) {
+      console.error('Virtual try-on failed:', error)
       toast.error('Virtual try-on failed. Please try again.')
-      // Reset try-on result on error to prevent crashes
       setTryOnResult(null)
     } finally {
       setIsLoading(false)
@@ -265,6 +293,7 @@ export default function Home() {
               {/* Virtual Try-On Result */}
               {userImage && (
                 <motion.div
+                  id="try-on-section"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="card overflow-hidden"
@@ -282,6 +311,7 @@ export default function Home() {
                     tryOnResult={tryOnResult}
                     isLoading={isLoading}
                     onGetRecommendations={handleGetRecommendations}
+                    onTryOn={handleTryOn}
                   />
                 </motion.div>
               )}

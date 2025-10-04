@@ -23,6 +23,13 @@ EXTRACTED_CLOTH_IMAGES_FOLDER = os.getenv("EXTRACTED_CLOTH_IMAGES_FOLDER")
 SOURCE_FOLDER = os.getenv("SOURCE_FOLDER")
 FITTED_IMAGES_FOLDER = os.getenv("FITTED_IMAGES_FOLDER")
 
+# Ensure paths are absolute
+if FITTED_IMAGES_FOLDER and not os.path.isabs(FITTED_IMAGES_FOLDER):
+    FITTED_IMAGES_FOLDER = os.path.join(os.path.dirname(__file__), FITTED_IMAGES_FOLDER)
+
+if EXTRACTED_CLOTH_IMAGES_FOLDER and not os.path.isabs(EXTRACTED_CLOTH_IMAGES_FOLDER):
+    EXTRACTED_CLOTH_IMAGES_FOLDER = os.path.join(os.path.dirname(__file__), EXTRACTED_CLOTH_IMAGES_FOLDER)
+
 chromadb_client = chromadb.PersistentClient(path=CHROMADB_PATH)
 embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(model_name="thenlper/gte-base")
 
@@ -204,7 +211,13 @@ async def segmind_diffusion(cloth_image_url: str = None, model_image_url: str = 
                 else:
                     img_path = os.path.join(FITTED_IMAGES_FOLDER, "tryon_result.png")
                 
+                # Fix path separators for Windows
+                img_path = os.path.normpath(img_path)
                 print(f"Saving try-on result to: {img_path}")
+                
+                # Ensure directory exists
+                os.makedirs(os.path.dirname(img_path), exist_ok=True)
+                
                 with open(img_path, "wb") as image_file:
                     image_file.write(image_data)
                 

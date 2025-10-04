@@ -33,7 +33,7 @@ app.add_middleware(
 
 UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "user_images")
 UPLOADED_PERSON_IMAGE_NAME = None
-SQLITE_DB_PATH = "myntra.db"
+SQLITE_DB_PATH = os.path.join(os.path.dirname(__file__), "myntra.db")
 print(f"Database path: {SQLITE_DB_PATH}")
 EXTRACTED_CLOTH_IMAGES_FOLDER = os.path.join(os.path.dirname(__file__), "fitted_images")
 print(f"Upload directory: {UPLOAD_DIR}")
@@ -338,20 +338,27 @@ def check_user_image():
     return {"has_user_image": UPLOADED_PERSON_IMAGE_NAME is not None, "filename": UPLOADED_PERSON_IMAGE_NAME}
 
 @app.get("/get_myntra_data")
-def get_myntra_data():
+def get_myntra_data(category: Optional[str] = None):
     try:
         print(f"Attempting to connect to database at: {SQLITE_DB_PATH}")
         conn = sqlite3.connect(SQLITE_DB_PATH)
         print("Database connection successful")
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM products WHERE extract_images IS NOT NULL")
-        print("Query executed successfully")
+        
+        # If category is specified, filter by it
+        if category:
+            cursor.execute("SELECT * FROM products WHERE extract_images IS NOT NULL AND LOWER(subcategory) = LOWER(?)", (category,))
+            print(f"Query executed successfully with category filter: {category}")
+        else:
+            cursor.execute("SELECT * FROM products WHERE extract_images IS NOT NULL")
+            print("Query executed successfully")
+            
         rows = cursor.fetchall()
         conn.close()
 
         # Convert rows to list of dicts  
-        data = [dict(row) for row in rows]  # Remove the [:30] limit to show all products
+        data = [dict(row) for row in rows]
         print(f"Returning {len(data)} rows")
         return data
 
