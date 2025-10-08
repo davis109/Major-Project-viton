@@ -7,7 +7,6 @@ import toast from 'react-hot-toast'
 import Header from '@/components/Header'
 import ImageUpload from '@/components/ImageUpload' 
 import VirtualTryOn from '@/components/VirtualTryOn'
-import RecommendationPanel from '@/components/RecommendationPanel'
 import LoadingSpinner from '@/components/LoadingSpinner'
 
 interface Product {
@@ -155,15 +154,16 @@ export default function Home() {
       if (response.ok) {
         const result = await response.json()
         if (result.success) {
-          // Create a simplified result structure for single item try-on
-          
           // Validate that the fitted_image path is reasonable
           if (result.fitted_image && typeof result.fitted_image === 'string') {
             setTryOnResult({
               selected_image: result.fitted_image,
-              recommended_images: [] // No recommendations for single item try-on
+              recommended_images: [] // Will be populated separately when user requests
             })
             toast.success('Virtual try-on completed!')
+            
+            // After successful try-on, automatically get recommendations (but don't try them on)
+            handleGetRecommendations(product)
           } else {
             throw new Error('Invalid image path received from server')
           }
@@ -180,7 +180,57 @@ export default function Home() {
     } finally {
       setIsLoading(false)
     }
-  }, [userImage])
+  }, [userImage, handleGetRecommendations])
+
+  // Handle trying on recommended items
+  const handleTryOnRecommended = useCallback(async (recommendedItem: any) => {
+    if (!userImage) {
+      toast.error('Please upload your photo first!')
+      return
+    }
+
+    setIsLoading(true)
+
+    try {
+      const requestData = {
+        main_category: recommendedItem.main_category || selectedProduct?.main_category,
+        extract_images: recommendedItem.extract_images
+      }
+
+      const response = await fetch('http://localhost:8001/single_item_tryon', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      })
+
+      if (response.ok) {
+        const result = await response.json()
+        if (result.success) {
+          if (result.fitted_image && typeof result.fitted_image === 'string') {
+            // Update the try-on result with the new recommended item
+            setTryOnResult(prev => ({
+              selected_image: result.fitted_image,
+              recommended_images: prev?.recommended_images || []
+            }))
+            toast.success(`Trying on ${recommendedItem.name}!`)
+          } else {
+            throw new Error('Invalid image path received from server')
+          }
+        } else {
+          throw new Error(result.error || 'Try-on failed')
+        }
+      } else {
+        throw new Error('Try-on failed')
+      }
+    } catch (error) {
+      console.error('Recommended item try-on failed:', error)
+      toast.error('Try-on failed. Please try again.')
+    } finally {
+      setIsLoading(false)
+    }
+  }, [userImage, selectedProduct])
 
   return (
     <div className="min-h-screen">
@@ -239,9 +289,9 @@ export default function Home() {
       </section>
 
       <main className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Left Column - Image Upload & Try-On Result */}
-          <div className="lg:col-span-8">
+        <div className="max-w-6xl mx-auto">
+          {/* Main Content */}
+          <div>
             <div className="space-y-6">
               {/* Image Upload Section */}
               {!userImage && (
@@ -283,35 +333,14 @@ export default function Home() {
                     isLoading={isLoading}
                     onGetRecommendations={handleGetRecommendations}
                     onTryOn={handleTryOn}
+                    onTryOnRecommended={handleTryOnRecommended}
                   />
                 </motion.div>
               )}
             </div>
           </div>
 
-          {/* Right Column - Recommendations */}
-          <div className="lg:col-span-4">
-            <div className="space-y-6">
-              {/* Recommendations - Only show if there are actual recommendations */}
-              {tryOnResult && tryOnResult.recommended_images && tryOnResult.recommended_images.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3 }}
-                  className="card"
-                >
-                  <div className="p-6 border-b border-neutral-200 bg-gradient-to-r from-primary-50 to-accent-50">
-                    <h3 className="text-xl font-bold text-neutral-900 flex items-center gap-3">
-                      <Sparkles className="text-primary-600" size={24} />
-                      Recommended for You
-                    </h3>
-                  </div>
-                  
-                  <RecommendationPanel recommendations={tryOnResult?.recommended_images || []} />
-                </motion.div>
-              )}
-            </div>
-          </div>
+
         </div>
       </main>
 

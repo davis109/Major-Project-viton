@@ -36,6 +36,7 @@ interface VirtualTryOnProps {
   isLoading: boolean
   onGetRecommendations?: (product: Product) => Promise<void>
   onTryOn?: (product: Product) => Promise<void>
+  onTryOnRecommended?: (recommendedItem: any) => Promise<void>
 }
 
 export default function VirtualTryOn({
@@ -45,6 +46,7 @@ export default function VirtualTryOn({
   isLoading,
   onGetRecommendations,
   onTryOn,
+  onTryOnRecommended,
 }: VirtualTryOnProps) {
   return (
     <div className="p-6">
@@ -273,6 +275,97 @@ export default function VirtualTryOn({
                 </p>
               )}
             </div>
+          </div>
+        </motion.div>
+      )}
+
+      {/* Recommended Items */}
+      {tryOnResult?.recommended_images && tryOnResult.recommended_images.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mt-8"
+        >
+          <div className="flex items-center gap-3 mb-6">
+            <Sparkles className="text-primary-500" size={24} />
+            <h3 className="text-xl font-bold text-neutral-900">Recommended for You</h3>
+            <div className="h-px bg-neutral-200 flex-1"></div>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {tryOnResult.recommended_images.map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+                className="group bg-white rounded-xl shadow-sm border border-neutral-200 overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer"
+                onClick={() => onTryOnRecommended && onTryOnRecommended(item)}
+              >
+                <div className="relative aspect-square overflow-hidden">
+                  <Image
+                    src={`http://localhost:8001${item.original_image}`}
+                    alt={item.name}
+                    width={200}
+                    height={200}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    onError={(e: any) => {
+                      e.currentTarget.style.display = 'none'
+                      e.currentTarget.parentElement.innerHTML = `
+                        <div class="w-full h-full bg-neutral-100 flex items-center justify-center">
+                          <span class="text-neutral-400 text-xs">No Image</span>
+                        </div>
+                      `
+                    }}
+                  />
+                  
+                  {/* Discount Badge */}
+                  {item.discount > 0 && (
+                    <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                      -{Math.round(item.discount)}%
+                    </div>
+                  )}
+
+                  {/* Try-On Button Overlay */}
+                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center">
+                    <div className="bg-primary-600 text-white px-3 py-2 rounded-full text-xs font-medium opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 shadow-lg">
+                      ✨ Try This On
+                    </div>
+                  </div>
+                </div>
+
+                {/* Product Details */}
+                <div className="p-3">
+                  <h4 className="font-semibold text-neutral-800 text-sm line-clamp-2 mb-1">{item.name}</h4>
+                  <p className="text-xs text-neutral-500 mb-2 capitalize">{item.subcategory}</p>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-1">
+                      <span className="text-primary-600 font-bold text-sm">
+                        ₹{Math.round(item.price * (1 - item.discount / 100))}
+                      </span>
+                      {item.discount > 0 && (
+                        <span className="text-neutral-400 line-through text-xs">
+                          ₹{Math.round(item.price)}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center text-yellow-500">
+                      <span className="text-xs">⭐ 4.2</span>
+                    </div>
+                  </div>
+                  
+                  <p className="text-xs text-neutral-500 mt-1">by {item.seller}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          
+          <div className="mt-4 text-center">
+            <p className="text-sm text-neutral-600">
+              Click on any item above to try it on virtually! 
+              <span className="text-primary-600 font-semibold"> No automatic try-on</span> - only when you click.
+            </p>
           </div>
         </motion.div>
       )}
