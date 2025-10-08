@@ -3,9 +3,24 @@ from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 import sqlite3
 import os
-from rag import get_images_using_llm, viton_model, FITTED_IMAGES_FOLDER
+from rag import get_images_using_llm, viton_model, FITTED_IMAGES_FOLDER, search_products_rag
 from recommendation import get_top_products
 from typing import List
+from fastapi.middleware.cors import CORSMiddleware
+import asyncio
+import base64
+from typing import Optional
+from pydantic import BaseModel
+import sqlite3
+import os
+from rag import get_images_using_llm, viton_model, FITTED_IMAGES_FOLDER, search_products_rag
+from recommendation import get_top_products
+from typing import List
+from fastapi.middleware.cors import CORSMiddleware
+import asyncio
+import base64
+from typing import Optional
+from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 import base64
@@ -43,6 +58,31 @@ Path(UPLOAD_DIR).mkdir(parents=True, exist_ok=True)
 
 user_preferences = {"positive": {}, "negative": {}}
 visited_items = set()
+
+@app.post("/search_products")
+async def search_products(search: dict):
+    """
+    RAG-based product search using natural language queries
+    """
+    try:
+        query = search.get("query", "").strip()
+        if not query:
+            raise HTTPException(status_code=400, detail="Search query is required")
+        
+        print(f"RAG Search Query: {query}")
+        
+        # Use RAG to search products
+        products = search_products_rag(query, num_results=50)
+        
+        print(f"RAG search returned {len(products)} products")
+        return products
+        
+    except Exception as e:
+        print(f"Error in search_products: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Search error: {str(e)}")
+
 
 @app.post("/get_images")
 async def get_images(search: dict):

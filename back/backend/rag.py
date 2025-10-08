@@ -51,6 +51,77 @@ def get_data_from_db(clothing_item):
     }
 
 
+def search_products_rag(query, num_results=20):
+    """
+    Search products using RAG with ChromaDB and Gemini LLM
+    """
+    try:
+        # First, use Gemini to understand the query and extract search terms
+        prompt = f"""
+        You are a fashion search assistant. Analyze this user query: "{query}"
+        
+        Extract the key fashion terms, colors, categories, and style preferences.
+        Generate multiple search variations to find relevant products.
+        
+        Output only the search terms separated by commas, like:
+        red dress, formal dress, evening wear, party dress
+        """
+        
+        response = llm.invoke(prompt)
+        search_terms = [term.strip() for term in response.content.split(",")]
+        print(f"Generated search terms from '{query}': {search_terms}")
+        
+        # Search ChromaDB with multiple terms
+        all_results = []
+        seen_product_ids = set()
+        
+        for term in search_terms[:5]:  # Limit to first 5 terms to avoid too many queries
+            try:
+                result = collection.query(
+                    query_texts=[term],
+                    n_results=num_results,
+                    include=["documents", "metadatas", "distances"]
+                )
+                
+                # Process results
+                for i, metadata in enumerate(result["metadatas"][0]):
+                    product_id = metadata.get("product_id")
+                    if product_id and product_id not in seen_product_ids:
+                        product_data = {
+                            "product_id": product_id,
+                            "name": result["documents"][0][i],
+                            "img": metadata.get("img", ""),
+                            "extract_images": metadata.get("extract_images", ""),
+                            "main_category": metadata.get("main_category", ""),
+                            "subcategory": metadata.get("subcategory", ""),
+                            "seller": metadata.get("seller", ""),
+                            "price": float(metadata.get("price", 0)),
+                            "discount": float(metadata.get("discount", 0)),
+                            "distance": result["distances"][0][i] if result["distances"] else 1.0
+                        }
+                        all_results.append(product_data)
+                        seen_product_ids.add(product_id)
+                        
+            except Exception as e:
+                print(f"Error searching for term '{term}': {e}")
+                continue
+        
+        # Sort by relevance (lower distance = more relevant)
+        all_results.sort(key=lambda x: x["distance"])
+        
+        # Return top results
+        final_results = all_results[:num_results]
+        print(f"Found {len(final_results)} unique products for query '{query}'")
+        
+        return final_results
+        
+    except Exception as e:
+        print(f"Error in RAG search: {e}")
+        import traceback
+        traceback.print_exc()
+        return []
+
+
 def get_images_using_llm(query):
     
     prompt = f"""
