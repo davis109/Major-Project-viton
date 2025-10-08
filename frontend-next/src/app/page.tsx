@@ -2,11 +2,10 @@
 
 import { useState, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Upload, Sparkles, Shirt, User, Heart, Star, ShoppingBag, Zap } from 'lucide-react'
+import { Upload, Sparkles, Shirt, User, Heart, Star, Zap } from 'lucide-react'
 import toast from 'react-hot-toast'
 import Header from '@/components/Header'
 import ImageUpload from '@/components/ImageUpload' 
-import ProductGallery from '@/components/ProductGallery'
 import VirtualTryOn from '@/components/VirtualTryOn'
 import RecommendationPanel from '@/components/RecommendationPanel'
 import LoadingSpinner from '@/components/LoadingSpinner'
@@ -41,34 +40,6 @@ export default function Home() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [tryOnResult, setTryOnResult] = useState<TryOnResult | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const [products, setProducts] = useState<Product[]>([])
-  const [loadingProducts, setLoadingProducts] = useState(true)
-
-  // Fetch products on mount
-  const fetchProducts = useCallback(async () => {
-    try {
-      const response = await fetch('http://localhost:8001/get_myntra_data')
-      if (response.ok) {
-        const data = await response.json()
-        console.log('API Response:', data.length, 'items')
-        console.log('First 10 items:', data.slice(0, 10).map((p: Product) => ({ name: p.name, category: p.subcategory })))
-        const categories = data.map((p: Product) => p.subcategory).filter((c: string, i: number, arr: string[]) => arr.indexOf(c) === i)
-        console.log('Unique categories found:', categories.slice(0, 10))
-        setProducts(data)
-      } else {
-        toast.error('Failed to load products')
-      }
-    } catch (error) {
-      toast.error('Error loading products')
-    } finally {
-      setLoadingProducts(false)
-    }
-  }, [])
-
-  // Fetch products on component mount
-  useEffect(() => {
-    fetchProducts()
-  }, [fetchProducts])
 
   // Check for selected product from collections page
   useEffect(() => {
@@ -318,39 +289,9 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right Column - Products & Recommendations */}
+          {/* Right Column - Recommendations */}
           <div className="lg:col-span-4">
             <div className="space-y-6">
-              {/* Product Gallery */}
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="card"
-              >
-                <div className="p-6 border-b border-neutral-200 bg-gradient-to-r from-neutral-50 to-neutral-100">
-                  <h3 className="text-xl font-bold text-neutral-900 flex items-center gap-3">
-                    <ShoppingBag className="text-accent-500" size={24} />
-                    Fashion Collection
-                  </h3>
-                </div>
-                
-                <div className="p-6">
-                  {loadingProducts ? (
-                    <div className="space-y-4">
-                      {[...Array(4)].map((_, i) => (
-                        <div key={i} className="shimmer-effect h-20 rounded-lg"></div>
-                      ))}
-                    </div>
-                  ) : (
-                    <ProductGallery
-                      products={products}
-                      onProductSelect={handleTryOn}
-                      selectedProduct={selectedProduct}
-                    />
-                  )}
-                </div>
-              </motion.div>
-
               {/* Recommendations - Only show if there are actual recommendations */}
               {tryOnResult && tryOnResult.recommended_images && tryOnResult.recommended_images.length > 0 && (
                 <motion.div
