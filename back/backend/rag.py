@@ -8,13 +8,13 @@ import base64
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from root .env file
-load_dotenv("../../.env")
+# Load environment variables from local .env file
+load_dotenv(".env")
 load_dotenv()
 
 os.environ["GOOGLE_API_KEY"] = os.environ["GEMINI_API_KEY"]
 
-llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash")
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 
 DEFAULT_MODEL = os.getenv("DEFAULT_MODEL")
 CHROMADB_PATH = os.getenv("CHROMADB_PATH")
