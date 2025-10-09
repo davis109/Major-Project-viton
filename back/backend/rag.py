@@ -53,70 +53,161 @@ def get_data_from_db(clothing_item):
 
 def search_products_rag(query, num_results=20):
     """
-    Search products using RAG with ChromaDB and Gemini LLM
+    Search products using RAG with ChromaDB and Gemini LLM, with SQL fallback
     """
     try:
-        # First, use Gemini to understand the query and extract search terms
-        prompt = f"""
-        You are a fashion search assistant. Analyze this user query: "{query}"
+        print(f"=== RAG SEARCH WITH GEMINI ===")
+        print(f"Original Query: '{query}'")
         
-        Extract the key fashion terms, colors, categories, and style preferences.
-        Generate multiple search variations to find relevant products.
-        
-        Output only the search terms separated by commas, like:
-        red dress, formal dress, evening wear, party dress
-        """
-        
-        response = llm.invoke(prompt)
-        search_terms = [term.strip() for term in response.content.split(",")]
-        print(f"Generated search terms from '{query}': {search_terms}")
-        
-        # Search ChromaDB with multiple terms
-        all_results = []
-        seen_product_ids = set()
-        
-        for term in search_terms[:5]:  # Limit to first 5 terms to avoid too many queries
-            try:
-                result = collection.query(
-                    query_texts=[term],
-                    n_results=num_results,
-                    include=["documents", "metadatas", "distances"]
-                )
+        # First, try Gemini + ChromaDB approach
+        try:
+            # Use Gemini to understand the query and extract search terms
+            prompt = f"""
+            You are a fashion search assistant. Analyze this user query: "{query}"
+            
+            Extract the key fashion terms, colors, categories, and style preferences.
+            Generate multiple search variations to find relevant products.
+            Focus on clothing types like: shirt, t-shirt, dress, jeans, pants, blazer, hoodie, jacket, etc.
+            
+            Output only the search terms separated by commas, like:
+            red dress, formal dress, evening wear, party dress
+            """
+            
+            response = llm.invoke(prompt)
+            search_terms = [term.strip() for term in response.content.split(",")]
+            print(f"Gemini generated search terms: {search_terms}")
+            
+            # Try ChromaDB search first
+            chroma_results = []
+            if collection.count() > 0:
+                print(f"ChromaDB has {collection.count()} items, searching...")
                 
-                # Process results
-                for i, metadata in enumerate(result["metadatas"][0]):
-                    product_id = metadata.get("product_id")
-                    if product_id and product_id not in seen_product_ids:
-                        product_data = {
-                            "product_id": product_id,
-                            "name": result["documents"][0][i],
-                            "img": metadata.get("img", ""),
-                            "extract_images": metadata.get("extract_images", ""),
-                            "main_category": metadata.get("main_category", ""),
-                            "subcategory": metadata.get("subcategory", ""),
-                            "seller": metadata.get("seller", ""),
-                            "price": float(metadata.get("price", 0)),
-                            "discount": float(metadata.get("discount", 0)),
-                            "distance": result["distances"][0][i] if result["distances"] else 1.0
-                        }
-                        all_results.append(product_data)
-                        seen_product_ids.add(product_id)
+                # Search ChromaDB with multiple terms
+                all_results = []
+                seen_product_ids = set()
+                
+                for term in search_terms[:5]:  # Limit to first 5 terms
+                    try:
+                        result = collection.query(
+                            query_texts=[term],
+                            n_results=min(10, num_results),
+                            include=["documents", "metadatas", "distances"]
+                        )
                         
-            except Exception as e:
-                print(f"Error searching for term '{term}': {e}")
-                continue
+                        if result["metadatas"] and result["metadatas"][0]:
+                            print(f"ChromaDB found {len(result['metadatas'][0])} results for '{term}'")
+                            
+                            # Process results
+                            for i, metadata in enumerate(result["metadatas"][0]):
+                                product_id = metadata.get("product_id")
+                                if product_id and product_id not in seen_product_ids:
+                                    product_data = {
+                                        "product_id": product_id,
+                                        "name": result["documents"][0][i],
+                                        "img": metadata.get("img", ""),
+                                        "extract_images": metadata.get("extract_images", ""),
+                                        "main_category": metadata.get("main_category", ""),
+                                        "subcategory": metadata.get("subcategory", ""),
+                                        "seller": metadata.get("seller", ""),
+                                        "price": float(metadata.get("price", 0)),
+                                        "discount": float(metadata.get("discount", 0)),
+                                        "distance": result["distances"][0][i] if result["distances"] else 1.0
+                                    }
+                                    all_results.append(product_data)
+                                    seen_product_ids.add(product_id)
+                                    
+                    except Exception as e:
+                        print(f"ChromaDB error for term '{term}': {e}")
+                        continue
+                
+                if all_results:
+                    # Sort by relevance (lower distance = more relevant)
+                    all_results.sort(key=lambda x: x["distance"])
+                    chroma_results = all_results[:num_results]
+                    print(f"ChromaDB found {len(chroma_results)} unique products")
+                    
+                    if chroma_results:
+                        return chroma_results
+            
+        except Exception as e:
+            print(f"Gemini/ChromaDB approach failed: {e}")
         
-        # Sort by relevance (lower distance = more relevant)
-        all_results.sort(key=lambda x: x["distance"])
-        
-        # Return top results
-        final_results = all_results[:num_results]
-        print(f"Found {len(final_results)} unique products for query '{query}'")
-        
-        return final_results
+        # Fallback to direct SQL search
+        print("=== FALLING BACK TO SQL SEARCH ===")
+        return sql_fallback_search(query, num_results)
         
     except Exception as e:
         print(f"Error in RAG search: {e}")
+        import traceback
+        traceback.print_exc()
+        return sql_fallback_search(query, num_results)
+
+
+def sql_fallback_search(query, num_results=20):
+    """
+    Fallback SQL search when Gemini/ChromaDB fails
+    """
+    try:
+        # Connect to database
+        import sqlite3
+        
+        # Construct the database path
+        SQLITE_DB_PATH = os.path.join(os.path.dirname(__file__), "myntra.db")
+        
+        conn = sqlite3.connect(SQLITE_DB_PATH)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        
+        print(f"SQL fallback for query: '{query}'")
+        
+        # Direct keyword matching
+        query_lower = query.lower()
+        products = []
+        
+        # Search logic based on keywords in query
+        if any(term in query_lower for term in ['t-shirt', 'tshirt', 't shirt', 'tee']):
+            print("SQL: Searching for T-Shirt items...")
+            cursor.execute("SELECT * FROM products WHERE subcategory = 'T-Shirt' LIMIT ?", (num_results,))
+        elif 'shirt' in query_lower:
+            print("SQL: Searching for Shirt items...")
+            cursor.execute("SELECT * FROM products WHERE subcategory IN ('Shirt', 'T-Shirt') LIMIT ?", (num_results,))
+        elif 'dress' in query_lower:
+            print("SQL: Searching for Dress items...")
+            cursor.execute("SELECT * FROM products WHERE subcategory = 'Dress' LIMIT ?", (num_results,))
+        elif any(term in query_lower for term in ['jean', 'jeans']):
+            print("SQL: Searching for Jeans items...")
+            cursor.execute("SELECT * FROM products WHERE subcategory = 'Jeans' LIMIT ?", (num_results,))
+        elif any(term in query_lower for term in ['pant', 'pants']):
+            print("SQL: Searching for Pants items...")
+            cursor.execute("SELECT * FROM products WHERE subcategory = 'Pants' LIMIT ?", (num_results,))
+        elif 'blazer' in query_lower:
+            print("SQL: Searching for Blazer items...")
+            cursor.execute("SELECT * FROM products WHERE subcategory = 'Blazer' LIMIT ?", (num_results,))
+        else:
+            # Generic search across name and subcategory
+            print("SQL: Performing generic search...")
+            search_terms = query_lower.split()
+            if search_terms:
+                # Search for any term in name or subcategory
+                term = search_terms[0]  # Use first term
+                cursor.execute("SELECT * FROM products WHERE LOWER(name) LIKE ? OR LOWER(subcategory) LIKE ? LIMIT ?", 
+                             (f'%{term}%', f'%{term}%', num_results))
+            else:
+                cursor.execute("SELECT * FROM products LIMIT ?", (num_results,))
+        
+        rows = cursor.fetchall()
+        products = [dict(row) for row in rows]
+        
+        print(f"SQL search found {len(products)} products")
+        
+        if products:
+            print(f"Sample SQL results: {[p['name'] + ' (' + p['subcategory'] + ')' for p in products[:3]]}")
+        
+        conn.close()
+        return products
+        
+    except Exception as e:
+        print(f"SQL fallback error: {e}")
         import traceback
         traceback.print_exc()
         return []
