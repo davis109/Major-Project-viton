@@ -56,67 +56,6 @@ An advanced virtual try-on system that combines computer vision, natural languag
 │       └── ProductGallery.tsx # Product grid display
 ```
 
-## 🚀 Quick Start
-
-### Prerequisites
-- Python 3.8+
-- Node.js 16+
-- Google Gemini API key
-- Segmind API key
-
-### Backend Setup
-
-1. **Clone the repository**
-```bash
-git clone <repository-url>
-cd Virtual-Try-On-Ecommerce/back/backend
-```
-
-2. **Install Python dependencies**
-```bash
-pip install fastapi uvicorn sqlite3 chromadb langchain-google-genai python-multipart
-pip install sentence-transformers requests python-dotenv gradio-client pathlib
-```
-
-3. **Configure environment variables**
-Create a `.env` file in the backend directory:
-```env
-GOOGLE_API_KEY=your_gemini_api_key_here
-SEGMIND_API_KEY=your_segmind_api_key_here
-FITTED_IMAGES_FOLDER=fitted_images
-USER_IMAGES_FOLDER=user_images
-SQLITE_DB_PATH=myntra.db
-```
-
-4. **Initialize ChromaDB with product data**
-```bash
-python populate_chromadb.py
-```
-
-5. **Start the backend server**
-```bash
-python app.py
-```
-The API will be available at `http://localhost:8001`
-
-### Frontend Setup
-
-1. **Navigate to frontend directory**
-```bash
-cd ../../frontend-next
-```
-
-2. **Install Node.js dependencies**
-```bash
-npm install
-```
-
-3. **Start the development server**
-```bash
-npm run dev
-```
-The application will be available at `http://localhost:3000`
-
 ## 📖 Usage Guide
 
 ### 1. Upload Your Photo
@@ -255,7 +194,7 @@ The application will be available at `http://localhost:3000`
    - Add CDN for static assets
    - Consider microservices architecture
 
-### Docker Deployment (Recommended)
+### Docker Deployment
 
 ```dockerfile
 # Backend Dockerfile
@@ -348,26 +287,5 @@ For technical support or questions:
 
 ---
 
-## 🔮 Future Roadmap
-
-### Short Term (1-3 months)
-- [ ] Mobile app development
-- [ ] Enhanced image preprocessing
-- [ ] Multi-language support
-- [ ] Improved recommendation algorithms
-
-### Medium Term (3-6 months)
-- [ ] 3D virtual try-on capabilities
-- [ ] Social sharing features
-- [ ] Advanced analytics dashboard
-- [ ] Integration with e-commerce platforms
-
-### Long Term (6+ months)
-- [ ] AR/VR try-on experiences
-- [ ] Custom clothing design tools
-- [ ] Styling suggestions
-- [ ] Enterprise API offerings
-
-**Built with ❤️ using cutting-edge technology**
 
 
