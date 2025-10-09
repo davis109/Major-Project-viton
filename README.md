@@ -56,6 +56,11 @@ An advanced virtual try-on system that combines computer vision, natural languag
 │       └── ProductGallery.tsx # Product grid display
 ```
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 65d3b7508445ec32f06717cc760363360cc89c0e
 ## 📖 Usage Guide
 
 ### 1. Upload Your Photo
@@ -287,5 +292,9 @@ For technical support or questions:
 
 ---
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 65d3b7508445ec32f06717cc760363360cc89c0e
 
 
