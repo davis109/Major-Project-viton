@@ -15,12 +15,11 @@ if os.environ.get('GEMINI_API_KEY'):
 os.environ["GOOGLE_API_KEY"] = os.environ["GEMINI_API_KEY"]
 
 try:
-    print("Trying model: gemini-pro")
-    llm = ChatGoogleGenerativeAI(model="gemini-pro")
+    # Initialize the Gemini model
+    llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash")
     
     # Test a simple query
-    test_query = "Hello, are you working?"
-    print("Sending test query...")
+    test_query = "Extract search terms from this query: 'I want a red dress'"
     response = llm.invoke(test_query)
     
     print("✅ Gemini API connection successful!")
@@ -28,6 +27,5 @@ try:
     
 except Exception as e:
     print(f"❌ Gemini API connection failed: {e}")
-    print("Full error details:")
     import traceback
     traceback.print_exc()
