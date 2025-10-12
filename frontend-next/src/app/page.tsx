@@ -8,6 +8,7 @@ import Header from '@/components/Header'
 import ImageUpload from '@/components/ImageUpload' 
 import VirtualTryOn from '@/components/VirtualTryOn'
 import LoadingSpinner from '@/components/LoadingSpinner'
+import { API_BASE_URL } from '@/lib/config'
 
 interface Product {
   name: string
@@ -70,7 +71,7 @@ export default function Home() {
     formData.append('file', file)
 
     try {
-      const response = await fetch('http://localhost:8001/take_user_image', {
+      const response = await fetch(`${API_BASE_URL}/take_user_image`, {
         method: 'POST',
         body: formData,
       })
@@ -103,7 +104,7 @@ export default function Home() {
         extract_images: product.extract_images
       }
 
-      const response = await fetch('http://localhost:8001/get_recommendations', {
+      const response = await fetch(`${API_BASE_URL}/get_recommendations`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -143,7 +144,7 @@ export default function Home() {
         extract_images: product.extract_images
       }
 
-      const response = await fetch('http://localhost:8001/single_item_tryon', {
+      const response = await fetch(`${API_BASE_URL}/single_item_tryon`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -197,7 +198,7 @@ export default function Home() {
         extract_images: recommendedItem.extract_images
       }
 
-      const response = await fetch('http://localhost:8001/single_item_tryon', {
+      const response = await fetch(`${API_BASE_URL}/single_item_tryon`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import Header from '@/components/Header'
 import toast from 'react-hot-toast'
 import Image from 'next/image'
+import { API_BASE_URL } from '@/lib/config'
 
 interface Product {
   name: string
@@ -40,8 +41,8 @@ export default function Collections() {
     setLoading(true)
     try {
       const url = category && category !== 'All'
-        ? `http://localhost:8001/get_myntra_data?category=${encodeURIComponent(category)}`
-        : 'http://localhost:8001/get_myntra_data'
+        ? `${API_BASE_URL}/get_myntra_data?category=${encodeURIComponent(category)}`
+        : `${API_BASE_URL}/get_myntra_data`
       
       const response = await fetch(url)
       if (response.ok) {
@@ -78,7 +79,7 @@ export default function Collections() {
     setProducts([])
     
     try {
-      const response = await fetch('http://localhost:8001/search_products', {
+      const response = await fetch(`${API_BASE_URL}/search_products`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -311,7 +312,7 @@ export default function Collections() {
                 {/* Product Image */}
                 <div className={`relative ${viewMode === 'list' ? 'w-32 h-32' : 'aspect-square'} overflow-hidden`}>
                   <Image
-                    src={`http://localhost:8001${product.img}`}
+                    src={`${API_BASE_URL}${product.img}`}
                     alt={product.name}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-300"
