@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { Sparkles, Loader2, RefreshCw } from 'lucide-react'
 import Image from 'next/image'
+import { API_BASE_URL } from '@/lib/config'
 
 interface Product {
   name: string
@@ -115,7 +116,7 @@ export default function VirtualTryOn({
                 className="relative w-full h-full"
               >
                 <Image
-                  src={`http://localhost:8001${tryOnResult.selected_image}`}
+                  src={`${API_BASE_URL}${tryOnResult.selected_image}`}
                   alt="Virtual try-on result"
                   width={300}
                   height={400}
@@ -153,7 +154,7 @@ export default function VirtualTryOn({
             ) : !isLoading && selectedProduct ? (
               <div className="relative w-full h-full">
                 <Image
-                  src={`http://localhost:8001${selectedProduct.img}`}
+                  src={`${API_BASE_URL}${selectedProduct.img}`}
                   alt={selectedProduct.name}
                   width={300}
                   height={400}
@@ -161,8 +162,8 @@ export default function VirtualTryOn({
                   onError={(e: any) => {
                     // If main image fails, try the extract_images path
                     const extractPath = `/fitted_images/${selectedProduct.extract_images}`
-                    if (e.currentTarget.src !== `http://localhost:8001${extractPath}`) {
-                      e.currentTarget.src = `http://localhost:8001${extractPath}`
+                    if (e.currentTarget.src !== `${API_BASE_URL}${extractPath}`) {
+                      e.currentTarget.src = `${API_BASE_URL}${extractPath}`
                     } else {
                       // If both fail, show placeholder
                       e.currentTarget.style.display = 'none'
@@ -249,15 +250,15 @@ export default function VirtualTryOn({
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 bg-white rounded-lg overflow-hidden border">
               <Image
-                src={`http://localhost:8001${selectedProduct.img}`}
+                src={`${API_BASE_URL}${selectedProduct.img}`}
                 alt={selectedProduct.name}
                 width={64}
                 height={64}
                 className="w-full h-full object-cover"
                 onError={(e: any) => {
                   const extractPath = `/fitted_images/${selectedProduct.extract_images}`
-                  if (e.currentTarget.src !== `http://localhost:8001${extractPath}`) {
-                    e.currentTarget.src = `http://localhost:8001${extractPath}`
+                  if (e.currentTarget.src !== `${API_BASE_URL}${extractPath}`) {
+                    e.currentTarget.src = `${API_BASE_URL}${extractPath}`
                   }
                 }}
               />
@@ -304,7 +305,7 @@ export default function VirtualTryOn({
               >
                 <div className="relative aspect-square overflow-hidden">
                   <Image
-                    src={`http://localhost:8001${item.original_image}`}
+                    src={`${API_BASE_URL}${item.original_image}`}
                     alt={item.name}
                     width={200}
                     height={200}

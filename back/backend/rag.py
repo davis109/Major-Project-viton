@@ -8,27 +8,37 @@ import base64
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from local .env file
-load_dotenv(".env")
+# Load environment variables (works for both local and Vercel deployment)
 load_dotenv()
 
-os.environ["GOOGLE_API_KEY"] = os.environ["GEMINI_API_KEY"]
+# Set Google API key from environment (Vercel-compatible)
+GOOGLE_API_KEY = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+if GOOGLE_API_KEY:
+    os.environ["GOOGLE_API_KEY"] = GOOGLE_API_KEY
 
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 
-DEFAULT_MODEL = os.getenv("DEFAULT_MODEL")
-CHROMADB_PATH = os.getenv("CHROMADB_PATH")
+DEFAULT_MODEL = os.getenv("DEFAULT_MODEL", "2")
+CHROMADB_PATH = os.getenv("CHROMADB_PATH", "chroma_db")
 
-EXTRACTED_CLOTH_IMAGES_FOLDER = os.getenv("EXTRACTED_CLOTH_IMAGES_FOLDER")
-SOURCE_FOLDER = os.getenv("SOURCE_FOLDER")
-FITTED_IMAGES_FOLDER = os.getenv("FITTED_IMAGES_FOLDER")
+# Environment variables with defaults for Vercel deployment
+EXTRACTED_CLOTH_IMAGES_FOLDER = os.getenv("EXTRACTED_CLOTH_IMAGES_FOLDER", "extracted_cloth_images")
+SOURCE_FOLDER = os.getenv("SOURCE_FOLDER", "source_images")
+FITTED_IMAGES_FOLDER = os.getenv("FITTED_IMAGES_FOLDER", "fitted_images")
+SQLITE_DB_PATH = os.getenv("SQLITE_DB_PATH", "myntra.db")
 
-# Ensure paths are absolute
+# Ensure paths are relative to current file location (Vercel-compatible)
 if FITTED_IMAGES_FOLDER and not os.path.isabs(FITTED_IMAGES_FOLDER):
     FITTED_IMAGES_FOLDER = os.path.join(os.path.dirname(__file__), FITTED_IMAGES_FOLDER)
 
 if EXTRACTED_CLOTH_IMAGES_FOLDER and not os.path.isabs(EXTRACTED_CLOTH_IMAGES_FOLDER):
     EXTRACTED_CLOTH_IMAGES_FOLDER = os.path.join(os.path.dirname(__file__), EXTRACTED_CLOTH_IMAGES_FOLDER)
+
+if SQLITE_DB_PATH and not os.path.isabs(SQLITE_DB_PATH):
+    SQLITE_DB_PATH = os.path.join(os.path.dirname(__file__), SQLITE_DB_PATH)
+
+if CHROMADB_PATH and not os.path.isabs(CHROMADB_PATH):
+    CHROMADB_PATH = os.path.join(os.path.dirname(__file__), CHROMADB_PATH)
 
 chromadb_client = chromadb.PersistentClient(path=CHROMADB_PATH)
 embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(model_name="thenlper/gte-base")
