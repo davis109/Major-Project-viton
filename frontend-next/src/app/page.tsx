@@ -40,6 +40,10 @@ export default function Home() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [tryOnResult, setTryOnResult] = useState<TryOnResult | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [showClothingUpload, setShowClothingUpload] = useState(false)
+  const [clothingImage, setClothingImage] = useState<File | null>(null)
+  const [clothingCategory, setClothingCategory] = useState<'upperware' | 'lowerware' | 'dress'>('upperware')
+  const [clothingPreview, setClothingPreview] = useState<string | null>(null)
 
   // Check for selected product from collections page
   useEffect(() => {
@@ -233,6 +237,72 @@ export default function Home() {
     }
   }, [userImage, selectedProduct])
 
+  // Handle clothing item upload
+  const handleClothingImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setClothingImage(file)
+      setClothingPreview(URL.createObjectURL(file))
+    }
+  }
+
+  // Handle custom clothing try-on with Segmind API
+  const handleCustomClothingTryOn = async () => {
+    if (!userImage) {
+      toast.error('Please upload your photo first!')
+      return
+    }
+    
+    if (!clothingImage) {
+      toast.error('Please upload a clothing item!')
+      return
+    }
+
+    setIsLoading(true)
+
+    try {
+      // Map category to Segmind format
+      let segmindCategory = ''
+      if (clothingCategory === 'upperware') {
+        segmindCategory = 'Upper body'
+      } else if (clothingCategory === 'lowerware') {
+        segmindCategory = 'Lower body'
+      } else if (clothingCategory === 'dress') {
+        segmindCategory = 'Dress'
+      }
+
+      // Upload clothing image to backend
+      const formData = new FormData()
+      formData.append('file', clothingImage)
+      formData.append('category', segmindCategory)
+
+      const response = await fetch(`${API_BASE_URL}/custom_clothing_tryon`, {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (response.ok) {
+        const result = await response.json()
+        if (result.success) {
+          setTryOnResult({
+            selected_image: result.fitted_image,
+            recommended_images: []
+          })
+          toast.success('Virtual try-on completed with your custom clothing!')
+        } else {
+          throw new Error(result.error || 'Try-on failed')
+        }
+      } else {
+        throw new Error('Try-on failed')
+      }
+    } catch (error) {
+      console.error('Custom clothing try-on failed:', error)
+      toast.error('Virtual try-on failed. Please try again.')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
     <div className="min-h-screen">
       {/* Header */}
@@ -321,10 +391,90 @@ export default function Home() {
                   className="card overflow-hidden"
                 >
                   <div className="p-6 border-b border-neutral-200 bg-gradient-to-r from-primary-50 to-accent-50">
-                    <h2 className="text-2xl font-bold text-neutral-900 flex items-center gap-3">
-                      <Shirt className="text-primary-600" size={28} />
-                      Virtual Try-On Studio
-                    </h2>
+                    <div className="flex items-center justify-between mb-4">
+                      <h2 className="text-2xl font-bold text-neutral-900 flex items-center gap-3">
+                        <Shirt className="text-primary-600" size={28} />
+                        Virtual Try-On Studio
+                      </h2>
+                      
+                      {/* Toggle Button for Custom Clothing Upload */}
+                      <button
+                        onClick={() => setShowClothingUpload(!showClothingUpload)}
+                        className={`px-4 py-2 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2 ${
+                          showClothingUpload
+                            ? 'bg-primary-600 text-white hover:bg-primary-700'
+                            : 'bg-neutral-200 text-neutral-700 hover:bg-neutral-300'
+                        }`}
+                      >
+                        <Upload size={20} />
+                        {showClothingUpload ? 'Hide' : 'Upload'} Custom Clothing
+                      </button>
+                    </div>
+
+                    {/* Custom Clothing Upload Section */}
+                    {showClothingUpload && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="mt-4 p-4 bg-white rounded-lg border-2 border-dashed border-primary-300"
+                      >
+                        <h3 className="text-lg font-semibold mb-3 text-neutral-800">Try Your Own Clothing</h3>
+                        
+                        <div className="space-y-4">
+                          {/* Category Dropdown */}
+                          <div>
+                            <label className="block text-sm font-medium text-neutral-700 mb-2">
+                              Clothing Category
+                            </label>
+                            <select
+                              value={clothingCategory}
+                              onChange={(e) => setClothingCategory(e.target.value as 'upperware' | 'lowerware' | 'dress')}
+                              className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                            >
+                              <option value="upperware">Upper Wear (Shirts, T-shirts, Tops)</option>
+                              <option value="lowerware">Lower Wear (Pants, Jeans, Skirts)</option>
+                              <option value="dress">Dress (Full body outfits)</option>
+                            </select>
+                          </div>
+
+                          {/* File Upload */}
+                          <div>
+                            <label className="block text-sm font-medium text-neutral-700 mb-2">
+                              Upload Clothing Image
+                            </label>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={handleClothingImageChange}
+                              className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                            />
+                          </div>
+
+                          {/* Preview */}
+                          {clothingPreview && (
+                            <div className="mt-3">
+                              <p className="text-sm font-medium text-neutral-700 mb-2">Preview:</p>
+                              <img
+                                src={clothingPreview}
+                                alt="Clothing preview"
+                                className="w-32 h-32 object-cover rounded-lg border-2 border-primary-200"
+                              />
+                            </div>
+                          )}
+
+                          {/* Try On Button */}
+                          <button
+                            onClick={handleCustomClothingTryOn}
+                            disabled={!clothingImage || isLoading}
+                            className="w-full bg-gradient-to-r from-primary-600 to-accent-500 text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                          >
+                            <Sparkles size={20} />
+                            Try On Custom Clothing
+                          </button>
+                        </div>
+                      </motion.div>
+                    )}
                   </div>
                   
                   <VirtualTryOn
