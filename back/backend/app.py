@@ -25,6 +25,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 import base64
 from typing import Optional
+from fastapi import Form
 
 
 app = FastAPI()
@@ -376,6 +377,55 @@ async def get_user_image(file: UploadFile = File(...)):
 def check_user_image():
     """Check if a user image has been uploaded"""
     return {"has_user_image": UPLOADED_PERSON_IMAGE_NAME is not None, "filename": UPLOADED_PERSON_IMAGE_NAME}
+
+@app.post("/custom_clothing_tryon")
+async def custom_clothing_tryon(file: UploadFile = File(...), category: str = Form("Upper body")):
+    """Endpoint to upload custom clothing and perform virtual try-on using Segmind API"""
+    try:
+        # Check if user image exists
+        if not UPLOADED_PERSON_IMAGE_NAME:
+            raise HTTPException(status_code=400, detail="Please upload your photo first")
+
+        # Ensure the uploaded file is an image
+        if file.content_type not in ["image/jpeg", "image/png", "image/gif", "image/jpg"]:
+            raise HTTPException(status_code=400, detail="Unsupported file type.")
+        
+        # Save the custom clothing image temporarily
+        custom_clothing_dir = os.path.join(os.path.dirname(__file__), "custom_clothing")
+        Path(custom_clothing_dir).mkdir(parents=True, exist_ok=True)
+        
+        clothing_path = os.path.join(custom_clothing_dir, file.filename)
+        with open(clothing_path, "wb") as buffer:
+            buffer.write(await file.read())
+
+        print(f"Custom clothing saved: {clothing_path}")
+        print(f"Category: {category}")
+        
+        # Perform virtual try-on using Segmind API
+        person_image_path = os.path.join(UPLOAD_DIR, UPLOADED_PERSON_IMAGE_NAME)
+        
+        print(f"Calling Segmind API with custom clothing: {clothing_path}")
+        print(f"Person image: {person_image_path}")
+        
+        fitted_image_path = await viton_model(
+            cloth_image_path=clothing_path,
+            cloth_category=category,
+            person_image_path=person_image_path
+        )
+        
+        print(f"Virtual try-on result: {fitted_image_path}")
+        
+        return {
+            "success": True,
+            "fitted_image": fitted_image_path,
+            "clothing_filename": file.filename
+        }
+
+    except Exception as e:
+        print(f"Error in custom_clothing_tryon: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Error performing try-on: {str(e)}")
 
 @app.get("/get_myntra_data")
 def get_myntra_data(category: Optional[str] = None):
