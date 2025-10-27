@@ -5,6 +5,11 @@
 @layer base {
   html {
     font-feature-settings: 'rlig' 1, 'calt' 1;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply antialiased;
   }
 }
 
@@ -40,6 +45,18 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary-600 to-accent-500 bg-clip-text text-transparent;
+  }
+
+  .floating {
+    animation: floating 3s ease-in-out infinite;
+  }
+
+  .pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
 }
 
 @layer utilities {
@@ -54,6 +71,14 @@
   .animation-delay-300 {
     animation-delay: 300ms;
   }
+
+  .animation-delay-500 {
+    animation-delay: 500ms;
+  }
+
+  .animation-delay-1000 {
+    animation-delay: 1000ms;
+  }
 }
 
 @keyframes shimmer {
@@ -65,21 +90,58 @@
   }
 }
 
+@keyframes floating {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
 /* Custom scrollbar */
 .overflow-y-auto::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 .overflow-y-auto::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 3px;
+  background: #f8f8f8;
+  border-radius: 4px;
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 3px;
+  background: linear-gradient(to bottom, #6366f1, #8b5cf6);
+  border-radius: 4px;
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb:hover {
-  background: #a1a1a1;
+  background: linear-gradient(to bottom, #4f46e5, #7c3aed);
+}
+
+/* Smooth transitions */
+* {
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Remove transitions for specific elements */
+button, a, input, select, textarea {
+  transition-duration: 200ms;
+}
+
+/* Glow effect */
+.glow {
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+}
+
+.glow-accent {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+}
+
+/* Glass morphism */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }

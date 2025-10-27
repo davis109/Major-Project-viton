@@ -37,11 +37,11 @@ export default function LoadingSpinner() {
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           className="text-xl font-bold text-neutral-900 mb-2"
         >
-          Creating Magic...
+          Please wait...
         </motion.h3>
         
         <p className="text-neutral-600 mb-4">
-          Our AI is working on your virtual try-on
+          Working on your virtual try-on
         </p>
         
         <div className="flex items-center justify-center gap-2 text-sm text-neutral-500">
