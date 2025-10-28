@@ -1,14 +1,19 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Upload, Sparkles, Shirt, User, Heart, Star, Zap } from 'lucide-react'
 import toast from 'react-hot-toast'
 import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 import ImageUpload from '@/components/ImageUpload' 
 import VirtualTryOn from '@/components/VirtualTryOn'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import { API_BASE_URL } from '@/lib/config'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 interface Product {
   name: string
@@ -44,6 +49,44 @@ export default function Home() {
   const [clothingImage, setClothingImage] = useState<File | null>(null)
   const [clothingCategory, setClothingCategory] = useState<'upperware' | 'lowerware' | 'dress'>('upperware')
   const [clothingPreview, setClothingPreview] = useState<string | null>(null)
+
+  const heroRef = useRef<HTMLDivElement>(null)
+  const titleRef = useRef<HTMLHeadingElement>(null)
+  const featuresRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    // GSAP animations for hero section
+    const ctx = gsap.context(() => {
+      // Animate title with split text effect
+      gsap.from(titleRef.current, {
+        y: 100,
+        opacity: 0,
+        duration: 1.2,
+        ease: 'power4.out',
+      })
+
+      // Animate features
+      gsap.from(featuresRef.current?.children || [], {
+        y: 50,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: 'back.out(1.7)',
+        delay: 0.5,
+      })
+
+      // Background animation
+      gsap.to(heroRef.current, {
+        backgroundPosition: '200% 0%',
+        duration: 20,
+        repeat: -1,
+        yoyo: true,
+        ease: 'none',
+      })
+    })
+
+    return () => ctx.revert()
+  }, [])
 
   // Check for selected product from collections page
   useEffect(() => {
@@ -309,10 +352,14 @@ export default function Home() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary-50 via-white to-accent-50">
+      <section ref={heroRef} className="relative overflow-hidden bg-gradient-to-br from-primary-50 via-white to-accent-50" style={{ backgroundSize: '200% 200%' }}>
         <div className="absolute inset-0 bg-pattern opacity-30"></div>
         
-        <div className="relative max-w-7xl mx-auto px-4 py-20">
+        {/* Floating shapes */}
+        <div className="absolute top-20 left-10 w-20 h-20 bg-primary-200 rounded-full blur-3xl opacity-50 animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-32 h-32 bg-accent-200 rounded-full blur-3xl opacity-50 animate-pulse delay-1000"></div>
+        
+        <div className="relative max-w-7xl mx-auto px-4 py-24 md:py-32">
           <div className="text-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -320,41 +367,71 @@ export default function Home() {
               transition={{ duration: 0.8 }}
               className="mb-8"
             >
-              <div className="inline-flex items-center gap-2 bg-primary-100 text-primary-700 px-4 py-2 rounded-full text-sm font-semibold mb-6">
-                <Sparkles size={16} />
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary-100 to-accent-100 text-primary-700 px-6 py-3 rounded-full text-sm font-semibold mb-8 shadow-lg">
+                <Sparkles size={18} />
                 AI-Powered Virtual Try-On
               </div>
-              <h1 className="text-6xl font-bold text-neutral-900 mb-6 text-shadow">
+              <h1 ref={titleRef} className="text-5xl md:text-7xl font-bold text-neutral-900 mb-6 leading-tight">
                 Experience Fashion
-                <span className="bg-gradient-to-r from-primary-600 to-accent-500 bg-clip-text text-transparent block">
+                <span className="bg-gradient-to-r from-primary-600 via-purple-600 to-accent-500 bg-clip-text text-transparent block mt-2">
                   Like Never Before
                 </span>
               </h1>
-              <p className="text-xl text-neutral-600 max-w-3xl mx-auto leading-relaxed">
+              <p className="text-xl md:text-2xl text-neutral-600 max-w-3xl mx-auto leading-relaxed">
                 Upload your photo and instantly see how any outfit looks on you with our advanced AI technology. 
-                Discover your perfect style with personalized recommendations.
+                <span className="font-semibold text-primary-600"> Discover your perfect style</span> with personalized recommendations.
               </p>
             </motion.div>
 
             <motion.div
+              ref={featuresRef}
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
+              className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-12"
             >
-              <div className="flex items-center gap-2 text-neutral-700">
-                <Zap className="text-primary-500" size={20} />
-                <span className="font-semibold">Instant Results</span>
-              </div>
-              <div className="flex items-center gap-2 text-neutral-700">
-                <Heart className="text-accent-500" size={20} />
-                <span className="font-semibold">Personalized</span>
-              </div>
-              <div className="flex items-center gap-2 text-neutral-700">
-                <Star className="text-yellow-500" size={20} />
-                <span className="font-semibold">Premium Quality</span>
-              </div>
+              <motion.div 
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="flex items-center gap-3 bg-white px-6 py-3 rounded-2xl shadow-lg"
+              >
+                <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
+                  <Zap className="text-primary-600" size={22} />
+                </div>
+                <span className="font-semibold text-neutral-700">Instant Results</span>
+              </motion.div>
+              <motion.div 
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="flex items-center gap-3 bg-white px-6 py-3 rounded-2xl shadow-lg"
+              >
+                <div className="w-10 h-10 bg-accent-100 rounded-full flex items-center justify-center">
+                  <Heart className="text-accent-600" size={22} />
+                </div>
+                <span className="font-semibold text-neutral-700">Personalized</span>
+              </motion.div>
+              <motion.div 
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="flex items-center gap-3 bg-white px-6 py-3 rounded-2xl shadow-lg"
+              >
+                <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                  <Star className="text-yellow-600" size={22} />
+                </div>
+                <span className="font-semibold text-neutral-700">Premium Quality</span>
+              </motion.div>
             </motion.div>
+
+            {/* CTA Button */}
+            <motion.a
+              href="/collections"
+              whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(0,0,0,0.15)' }}
+              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="inline-flex items-center gap-3 bg-gradient-to-r from-primary-600 to-accent-500 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-2xl hover:shadow-primary-500/50 transition-all"
+            >
+              <Sparkles size={24} />
+              Browse Collections
+            </motion.a>
           </div>
         </div>
       </section>
@@ -392,9 +469,9 @@ export default function Home() {
                 >
                   <div className="p-6 border-b border-neutral-200 bg-gradient-to-r from-primary-50 to-accent-50">
                     <div className="flex items-center justify-between mb-4">
-                      <h2 className="text-2xl font-bold text-neutral-900 flex items-center gap-3">
+                      <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary-600 to-accent-500 bg-clip-text text-transparent flex items-center gap-3">
                         <Shirt className="text-primary-600" size={28} />
-                        Virtual Try-On Studio
+                        VITON Try-On Studio
                       </h2>
                       
                       {/* Toggle Button for Custom Clothing Upload */}
@@ -494,6 +571,9 @@ export default function Home() {
 
         </div>
       </main>
+
+      {/* Footer */}
+      <Footer />
 
       {/* Loading Overlay */}
       <AnimatePresence>

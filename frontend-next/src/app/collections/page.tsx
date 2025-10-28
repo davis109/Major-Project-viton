@@ -1,14 +1,19 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Search, Sparkles, Loader2, Filter, Grid, List } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Header from '@/components/Header'
+import Footer from '@/components/Footer'
+import ProductCard from '@/components/ProductCard'
 import toast from 'react-hot-toast'
-import Image from 'next/image'
 import { API_BASE_URL } from '@/lib/config'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 interface Product {
   name: string
@@ -166,8 +171,10 @@ export default function Collections() {
 
         {/* Page Title */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-neutral-800 mb-2">Fashion Collection</h1>
-          <p className="text-neutral-600">
+          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary-600 to-accent-500 bg-clip-text text-transparent mb-3">
+            Fashion Collection
+          </h1>
+          <p className="text-neutral-600 text-lg">
             {showAISearch ? 'Search for clothing items using natural language' : `Discover our curated collection of ${selectedCategory.toLowerCase() === 'all' ? 'fashion items' : selectedCategory.toLowerCase()}s`}
           </p>
         </div>
@@ -299,77 +306,12 @@ export default function Collections() {
               : 'grid-cols-1'
           }`}>
             {products.map((product, index) => (
-              <motion.div
+              <ProductCard
                 key={product.product_id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                onClick={() => handleProductSelect(product)}
-                className={`group bg-white rounded-2xl shadow-sm border border-neutral-200 overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer ${
-                  viewMode === 'list' ? 'flex' : ''
-                }`}
-              >
-                {/* Product Image */}
-                <div className={`relative ${viewMode === 'list' ? 'w-32 h-32' : 'aspect-square'} overflow-hidden`}>
-                  <Image
-                    src={`${API_BASE_URL}${product.img}`}
-                    alt={product.name}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-300"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement
-                      target.style.display = 'none'
-                      target.parentElement!.innerHTML = `
-                        <div class="w-full h-full bg-neutral-100 flex items-center justify-center">
-                          <span class="text-neutral-400 text-xs">No Image</span>
-                        </div>
-                      `
-                    }}
-                  />
-                  
-                  {/* Discount Badge */}
-                  {product.discount > 0 && (
-                    <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                      -{Math.round(product.discount)}%
-                    </div>
-                  )}
-
-                  {/* Try-On Button Overlay */}
-                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center">
-                    <div className="bg-primary-600 text-white px-4 py-2 rounded-full text-sm font-medium opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 shadow-lg">
-                      Try On This Item
-                    </div>
-                  </div>
-                </div>
-
-                {/* Product Details */}
-                <div className={`p-4 ${viewMode === 'list' ? 'flex-1' : ''}`}>
-                  <h3 className="font-semibold text-neutral-800 mb-2 line-clamp-2">{product.name}</h3>
-                  
-                  <div className="space-y-2">
-                    <p className="text-sm text-neutral-600">{product.seller}</p>
-                    <p className="text-xs bg-neutral-100 text-neutral-700 px-2 py-1 rounded-full inline-block">
-                      {product.subcategory}
-                    </p>
-                    
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-lg font-bold text-primary-600">
-                          ₹{Math.round(product.price * (1 - product.discount / 100))}
-                        </span>
-                        {product.discount > 0 && (
-                          <span className="text-sm text-neutral-500 line-through">
-                            ₹{Math.round(product.price)}
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex items-center text-yellow-500">
-                        <span className="text-xs">⭐ 4.2</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
+                product={product}
+                onTryOn={handleProductSelect}
+                index={index}
+              />
             ))}
           </div>
         )}
@@ -404,6 +346,9 @@ export default function Collections() {
           </div>
         )}
       </main>
+
+      {/* Footer */}
+      <Footer />
     </div>
   )
 }
