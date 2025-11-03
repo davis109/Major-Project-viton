@@ -46,6 +46,142 @@ embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(mo
 collection = chromadb_client.get_or_create_collection(name="myntra_data", embedding_function=embedding_function) # If not specified, by default uses the embedding function "all-MiniLM-L6-v2"
 
 
+def get_gemini_recommendations(selected_item_name, selected_category, selected_subcategory, num_results=5):
+    """
+    Use Gemini AI to intelligently recommend complementary clothing items
+    Returns product data WITHOUT running virtual try-on
+    """
+    import sqlite3
+    
+    try:
+        print(f"=== GEMINI RECOMMENDATIONS ===")
+        print(f"Selected Item: {selected_item_name}")
+        print(f"Category: {selected_category}")
+        print(f"Subcategory: {selected_subcategory}")
+        
+        # Use Gemini to determine what would pair well with the selected item
+        prompt = f"""
+        You are a professional fashion stylist. A user just tried on this item:
+        - Name: {selected_item_name}
+        - Category: {selected_category}
+        - Subcategory: {selected_subcategory}
+        
+        Based on this selection, recommend complementary clothing items that would create a complete, stylish outfit.
+        
+        Rules:
+        - If they selected Top Wear, recommend Bottom Wear (jeans, pants, skirts, etc.)
+        - If they selected Bottom Wear, recommend Top Wear (shirts, t-shirts, blouses, etc.)
+        - If they selected Western Wear (dress), recommend accessories or complementary dresses
+        - Focus on items that match the style and formality level
+        - Consider color coordination and fashion trends
+        
+        Output ONLY the clothing types/subcategories you recommend, separated by commas.
+        Examples: "Jeans, Pants, Casual Trousers" or "Shirt, T-Shirt, Blouse"
+        
+        Do not include any explanations, just the comma-separated list.
+        """
+        
+        response = llm.invoke(prompt)
+        recommended_types = [term.strip() for term in response.content.split(",")]
+        print(f"Gemini recommended types: {recommended_types}")
+        
+        # Determine the complementary category
+        if selected_category == "Top Wear":
+            complementary_category = "Bottom Wear"
+        elif selected_category == "Bottom Wear":
+            complementary_category = "Top Wear"
+        elif selected_category == "Western Wear":
+            complementary_category = "Western Wear"
+        else:
+            complementary_category = "Top Wear"  # Default
+        
+        # Search database for matching products
+        SQLITE_DB_PATH_LOCAL = os.path.join(os.path.dirname(__file__), "myntra.db")
+        conn = sqlite3.connect(SQLITE_DB_PATH_LOCAL)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        
+        # Build SQL query based on Gemini's recommendations
+        products = []
+        for recommended_type in recommended_types[:3]:  # Limit to top 3 types
+            query = """
+                SELECT * FROM products 
+                WHERE main_category = ? 
+                AND (subcategory LIKE ? OR name LIKE ?)
+                AND extract_images IS NOT NULL
+                ORDER BY RANDOM()
+                LIMIT ?
+            """
+            cursor.execute(query, (
+                complementary_category,
+                f"%{recommended_type}%",
+                f"%{recommended_type}%",
+                max(2, num_results // len(recommended_types[:3]))
+            ))
+            products.extend(cursor.fetchall())
+        
+        conn.close()
+        
+        # Convert to list of dicts and ensure uniqueness
+        seen_ids = set()
+        unique_products = []
+        for row in products:
+            product_dict = dict(row)
+            if product_dict['product_id'] not in seen_ids:
+                seen_ids.add(product_dict['product_id'])
+                unique_products.append(product_dict)
+                if len(unique_products) >= num_results:
+                    break
+        
+        print(f"Found {len(unique_products)} recommended products")
+        return unique_products
+        
+    except Exception as e:
+        print(f"Error in Gemini recommendations: {e}")
+        import traceback
+        traceback.print_exc()
+        # Fallback to simple category-based recommendations
+        return get_simple_recommendations(selected_category, num_results)
+
+
+def get_simple_recommendations(selected_category, num_results=5):
+    """
+    Simple fallback recommendation without Gemini
+    """
+    import sqlite3
+    
+    try:
+        # Determine complementary category
+        if selected_category == "Top Wear":
+            complementary_category = "Bottom Wear"
+        elif selected_category == "Bottom Wear":
+            complementary_category = "Top Wear"
+        else:
+            complementary_category = "Top Wear"
+        
+        SQLITE_DB_PATH_LOCAL = os.path.join(os.path.dirname(__file__), "myntra.db")
+        conn = sqlite3.connect(SQLITE_DB_PATH_LOCAL)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        
+        cursor.execute("""
+            SELECT * FROM products 
+            WHERE main_category = ? 
+            AND extract_images IS NOT NULL
+            ORDER BY RANDOM()
+            LIMIT ?
+        """, (complementary_category, num_results))
+        
+        products = [dict(row) for row in cursor.fetchall()]
+        conn.close()
+        
+        return products
+        
+    except Exception as e:
+        print(f"Error in simple recommendations: {e}")
+        return []
+
+
 def get_data_from_db(clothing_item):
     result = collection.query(query_texts=clothing_item, n_results=1, include=["documents", "metadatas"])
     extracted_image = result["metadatas"][0][0]["extract_images"]
