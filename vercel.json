@@ -1,27 +1,27 @@
 {
   "version": 2,
+  "buildCommand": "cd frontend-next && npm install && npm run build",
+  "outputDirectory": "frontend-next/.next",
+  "framework": "nextjs",
   "builds": [
     {
       "src": "back/backend/app.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "frontend-next/package.json",
-      "use": "@vercel/next"
+      "use": "@vercel/python",
+      "config": {
+        "maxLambdaSize": "50mb"
+      }
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
       "dest": "back/backend/app.py"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "frontend-next/$1"
     }
   ],
-  "env": {
-    "GEMINI_API_KEY": "@gemini_api_key",
-    "SEGMIND_API_KEY": "@segmind_api_key"
+  "functions": {
+    "back/backend/app.py": {
+      "memory": 3008,
+      "maxDuration": 60
+    }
   }
 }
