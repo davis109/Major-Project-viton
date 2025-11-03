@@ -3,7 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 import sqlite3
 import os
-from rag import get_images_using_llm, viton_model, FITTED_IMAGES_FOLDER, search_products_rag
+from rag import get_images_using_llm, viton_model, FITTED_IMAGES_FOLDER, search_products_rag, get_gemini_recommendations
 from recommendation import get_top_products
 from typing import List
 from fastapi.middleware.cors import CORSMiddleware
@@ -13,7 +13,7 @@ from typing import Optional
 from pydantic import BaseModel
 import sqlite3
 import os
-from rag import get_images_using_llm, viton_model, FITTED_IMAGES_FOLDER, search_products_rag
+from rag import get_images_using_llm, viton_model, FITTED_IMAGES_FOLDER, search_products_rag, get_gemini_recommendations
 from recommendation import get_top_products
 from typing import List
 from fastapi.middleware.cors import CORSMiddleware
@@ -247,44 +247,22 @@ async def get_recommendations(data: dict):
     if any(not isinstance(product, dict) for product in fashion_trend_products):
         return {"error": "Invalid data format: Each item in 'fashion_trend_products' should be a dictionary"}
     
-    # Get fitted images for the recommended items too
-    print("Generating virtual try-on results for recommendations...")
-    recommendation_tryon_results = []
+    # DON'T automatically generate try-on for recommendations
+    # Just return the product data - let user click to try on individual items
+    print("Returning recommendation product data (NO automatic try-on)")
     
-    for product in fashion_trend_products:
-        try:
-            # Map product category to VITON category
-            if product["main_category"] == "Top Wear":
-                viton_category = "Upper body"
-            elif product["main_category"] == "Bottom Wear":
-                viton_category = "Lower body"
-            elif product["main_category"] == "Western Wear":
-                viton_category = "Dress"
-            else:
-                viton_category = "Upper body"  # Default
-            
-            # Generate virtual try-on for this recommendation
-            tryon_result = await viton_model(
-                cloth_image_path=os.path.join(EXTRACTED_CLOTH_IMAGES_FOLDER, product["extract_images"]), 
-                cloth_category=viton_category, 
-                person_image_path=absolute_tryon_path  # Use the absolute path
-            )
-            recommendation_tryon_results.append(tryon_result)
-            
-        except Exception as e:
-            print(f"Error generating try-on for {product['name']}: {e}")
-            # Fallback to original image if try-on fails
-            recommendation_tryon_results.append(product["extract_images"])
-    
-    # Return just the try-on result and recommendations with their try-on results
+    # Return just the try-on result and recommendations WITHOUT fitted images
     fitted_images = {"images": [extracted_image_path]}  # Only the single try-on result
     
     recommended_images_details = [
         {
             "name": fashion_trend_products[i]["name"],
+            "product_id": fashion_trend_products[i]["product_id"],
             "subcategory": fashion_trend_products[i]["subcategory"],
-            "fitted_image": recommendation_tryon_results[i] if i < len(recommendation_tryon_results) else fashion_trend_products[i]["extract_images"],
+            "main_category": fashion_trend_products[i]["main_category"],
+            "extract_images": fashion_trend_products[i]["extract_images"],  # Original product image
             "original_image": fashion_trend_products[i]["img"],
+            "img": fashion_trend_products[i]["img"],
             "seller": fashion_trend_products[i]["seller"],
             "price": fashion_trend_products[i]["price"],
             "discount": fashion_trend_products[i]["discount"],
@@ -346,6 +324,64 @@ async def single_item_tryon(data: dict):
     except Exception as e:
         print(f"Error in single item try-on: {e}")
         return {"success": False, "error": str(e)}
+
+
+@app.post("/get_gemini_recommendations")
+async def get_gemini_recommendations_endpoint(data: dict):
+    """
+    Get AI-powered clothing recommendations using Gemini
+    Does NOT automatically perform virtual try-on - only returns product data
+    """
+    try:
+        selected_item_name = data.get("name", "")
+        main_category = data.get("main_category", "")
+        subcategory = data.get("subcategory", "")
+        num_results = data.get("num_results", 5)
+        
+        print(f"=== GEMINI RECOMMENDATIONS REQUEST ===")
+        print(f"Selected: {selected_item_name} ({main_category} - {subcategory})")
+        print(f"Requesting {num_results} recommendations")
+        
+        # Get Gemini-powered recommendations (NO virtual try-on)
+        recommended_products = get_gemini_recommendations(
+            selected_item_name=selected_item_name,
+            selected_category=main_category,
+            selected_subcategory=subcategory,
+            num_results=num_results
+        )
+        
+        # Format response
+        recommended_images_details = [
+            {
+                "name": product.get("name", ""),
+                "product_id": product.get("product_id", ""),
+                "subcategory": product.get("subcategory", ""),
+                "main_category": product.get("main_category", ""),
+                "extract_images": product.get("extract_images", ""),
+                "img": product.get("img", ""),
+                "seller": product.get("seller", ""),
+                "price": float(product.get("price", 0)),
+                "discount": float(product.get("discount", 0)),
+            }
+            for product in recommended_products
+        ]
+        
+        print(f"Returning {len(recommended_images_details)} recommendations")
+        
+        return {
+            "success": True,
+            "recommended_images": recommended_images_details
+        }
+        
+    except Exception as e:
+        print(f"Error in Gemini recommendations: {e}")
+        import traceback
+        traceback.print_exc()
+        return {
+            "success": False,
+            "error": str(e),
+            "recommended_images": []
+        }
 
 
 @app.post("/take_user_image")
