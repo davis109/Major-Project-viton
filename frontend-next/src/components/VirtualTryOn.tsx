@@ -21,9 +21,12 @@ interface TryOnResult {
   selected_image: string
   recommended_images: Array<{
     name: string
+    product_id?: number
     subcategory: string
-    fitted_image: string
-    original_image: string
+    main_category: string
+    extract_images: string
+    original_image?: string  // Keep for backward compatibility
+    img: string  // Product catalog image
     seller: string
     price: number
     discount: number
@@ -296,7 +299,7 @@ export default function VirtualTryOn({
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {tryOnResult.recommended_images.map((item, index) => (
               <motion.div
-                key={index}
+                key={item.product_id || index}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -305,7 +308,7 @@ export default function VirtualTryOn({
               >
                 <div className="relative aspect-square overflow-hidden">
                   <Image
-                    src={`${API_BASE_URL}${item.original_image}`}
+                    src={`${API_BASE_URL}${item.img || item.original_image}`}
                     alt={item.name}
                     width={200}
                     height={200}
