@@ -31,9 +31,12 @@ interface TryOnResult {
   selected_image: string
   recommended_images: Array<{
     name: string
+    product_id?: number
     subcategory: string
-    fitted_image: string
-    original_image: string
+    main_category: string
+    extract_images: string
+    original_image?: string  // Keep for backward compatibility
+    img: string  // Product catalog image
     seller: string
     price: number
     discount: number
@@ -135,7 +138,7 @@ export default function Home() {
     }
   }, [])
 
-  // Handle getting recommendations separately
+  // Handle getting recommendations separately using Gemini AI
   const handleGetRecommendations = useCallback(async (product: Product) => {
     if (!product) {
       toast.error('No product selected for recommendations')
@@ -146,12 +149,15 @@ export default function Home() {
 
     try {
       const requestData = {
+        name: product.name,
         main_category: product.main_category,
-        target_audience: 'Female', // Default for now
-        extract_images: product.extract_images
+        subcategory: product.subcategory,
+        num_results: 6  // Request 6 recommendations
       }
 
-      const response = await fetch(`${API_BASE_URL}/get_recommendations`, {
+      console.log('Requesting Gemini recommendations with:', requestData)
+
+      const response = await fetch(`${API_BASE_URL}/get_gemini_recommendations`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -161,16 +167,21 @@ export default function Home() {
 
       if (response.ok) {
         const result = await response.json()
-        // Update only the recommendations part, keep the selected_image
-        setTryOnResult(prev => ({
-          selected_image: prev?.selected_image || '',
-          recommended_images: result.recommended_images || []
-        }))
-        toast.success('Recommendations loaded!')
+        if (result.success) {
+          // Update only the recommendations part, keep the selected_image
+          setTryOnResult(prev => ({
+            selected_image: prev?.selected_image || '',
+            recommended_images: result.recommended_images || []
+          }))
+          toast.success(`${result.recommended_images?.length || 0} recommendations loaded!`)
+        } else {
+          throw new Error(result.error || 'Failed to get recommendations')
+        }
       } else {
         throw new Error('Failed to get recommendations')
       }
     } catch (error) {
+      console.error('Recommendation error:', error)
       toast.error('Failed to get recommendations. Please try again.')
     } finally {
       setIsLoading(false)
