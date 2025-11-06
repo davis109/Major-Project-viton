@@ -211,17 +211,43 @@ def search_products_rag(query, num_results=20):
             prompt = f"""
             You are a fashion search assistant. Analyze this user query: "{query}"
             
-            Extract the key fashion terms, colors, categories, and style preferences.
-            Generate multiple search variations to find relevant products.
-            Focus on clothing types like: shirt, t-shirt, dress, jeans, pants, blazer, hoodie, jacket, etc.
+            Extract the main clothing category the user is looking for.
+            Be VERY specific about the subcategory - distinguish between similar items:
+            - "jeans" means Jeans (pants made of denim) NOT Denim Jacket
+            - "dress" means Dress (one-piece garment) NOT shirt or top
+            - "jacket" means Jacket/Coat, NOT pants or jeans
+            - "shirt" means Shirt/Top, NOT pants or bottom wear
             
-            Output only the search terms separated by commas, like:
-            red dress, formal dress, evening wear, party dress
+            Return in this exact format:
+            SUBCATEGORY: <most specific clothing type>
+            TERMS: <comma-separated search variations>
+            
+            Example for "show me jeans":
+            SUBCATEGORY: Jeans
+            TERMS: jeans, denim pants, blue jeans, casual jeans
+            
+            Example for "denim jacket":
+            SUBCATEGORY: Denim Jacket
+            TERMS: denim jacket, jean jacket, casual jacket
             """
             
             response = llm.invoke(prompt)
-            search_terms = [term.strip() for term in response.content.split(",")]
-            print(f"Gemini generated search terms: {search_terms}")
+            response_text = response.content.strip()
+            print(f"Gemini response: {response_text}")
+            
+            # Parse the response
+            target_subcategory = None
+            search_terms = []
+            
+            for line in response_text.split('\n'):
+                if line.startswith('SUBCATEGORY:'):
+                    target_subcategory = line.replace('SUBCATEGORY:', '').strip()
+                elif line.startswith('TERMS:'):
+                    terms_text = line.replace('TERMS:', '').strip()
+                    search_terms = [term.strip() for term in terms_text.split(",")]
+            
+            print(f"Target Subcategory: {target_subcategory}")
+            print(f"Search terms: {search_terms}")
             
             # Try ChromaDB search first
             chroma_results = []
@@ -232,28 +258,46 @@ def search_products_rag(query, num_results=20):
                 all_results = []
                 seen_product_ids = set()
                 
-                for term in search_terms[:5]:  # Limit to first 5 terms
+                # Prioritize target subcategory search
+                search_terms_prioritized = search_terms[:5] if not target_subcategory else [target_subcategory] + search_terms[:4]
+                
+                for term in search_terms_prioritized:
                     try:
+                        # Build where clause to filter by subcategory if we have a target
+                        where_clause = None
+                        if target_subcategory and term == target_subcategory:
+                            # Exact subcategory match for first term
+                            where_clause = {"subcategory": {"$eq": target_subcategory}}
+                            print(f"Searching with subcategory filter: {target_subcategory}")
+                        
                         result = collection.query(
                             query_texts=[term],
-                            n_results=min(10, num_results),
-                            include=["documents", "metadatas", "distances"]
+                            n_results=min(15, num_results),
+                            include=["documents", "metadatas", "distances"],
+                            where=where_clause
                         )
                         
                         if result["metadatas"] and result["metadatas"][0]:
-                            print(f"ChromaDB found {len(result['metadatas'][0])} results for '{term}'")
+                            print(f"ChromaDB found {len(result['metadatas'][0])} results for '{term}'" + 
+                                  (f" (filtered by {target_subcategory})" if where_clause else ""))
                             
                             # Process results
                             for i, metadata in enumerate(result["metadatas"][0]):
                                 product_id = metadata.get("product_id")
+                                product_subcategory = metadata.get("subcategory", "")
+                                
+                                # Skip if wrong subcategory when we have a target
+                                if target_subcategory and product_subcategory != target_subcategory:
+                                    continue
+                                
                                 if product_id and product_id not in seen_product_ids:
                                     product_data = {
                                         "product_id": product_id,
-                                        "name": result["documents"][0][i],
+                                        "name": metadata.get("name", ""),
                                         "img": metadata.get("img", ""),
                                         "extract_images": metadata.get("extract_images", ""),
                                         "main_category": metadata.get("main_category", ""),
-                                        "subcategory": metadata.get("subcategory", ""),
+                                        "subcategory": product_subcategory,
                                         "seller": metadata.get("seller", ""),
                                         "price": float(metadata.get("price", 0)),
                                         "discount": float(metadata.get("discount", 0)),

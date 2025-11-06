@@ -51,8 +51,13 @@ def populate_chromadb():
         ids = []
         
         for idx, row in df.iterrows():
-            # Create searchable document text
-            doc_text = f"{row['name']} {row['subcategory']} {row['main_category']} {row['seller']} color style fashion clothing"
+            # Create searchable document text with better category differentiation
+            # Emphasize the subcategory multiple times for better matching
+            subcategory = str(row['subcategory'])
+            main_category = str(row['main_category'])
+            name = str(row['name'])
+            
+            doc_text = f"{subcategory} {subcategory} {subcategory} {name} {main_category} category: {subcategory} type: {subcategory}"
             documents.append(doc_text)
             
             # Create metadata

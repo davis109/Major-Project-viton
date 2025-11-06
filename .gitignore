@@ -11,3 +11,4 @@ extracted_cloth_images
 extracted_cloth_images.zip
 chroma.sqlite3
 /frontend-next/.next
+.vercel
