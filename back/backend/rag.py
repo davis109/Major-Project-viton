@@ -211,24 +211,44 @@ def search_products_rag(query, num_results=20):
             prompt = f"""
             You are a fashion search assistant. Analyze this user query: "{query}"
             
-            Extract the main clothing category the user is looking for.
-            Be VERY specific about the subcategory - distinguish between similar items:
-            - "jeans" means Jeans (pants made of denim) NOT Denim Jacket
-            - "dress" means Dress (one-piece garment) NOT shirt or top
-            - "jacket" means Jacket/Coat, NOT pants or jeans
-            - "shirt" means Shirt/Top, NOT pants or bottom wear
+            Available clothing subcategories (use EXACTLY these names):
+            - T-Shirt (casual t-shirts, tees, graphic tees)
+            - Shirt (formal shirts, casual shirts, button-up shirts, full sleeve shirts)
+            - Jeans (denim pants, blue jeans)
+            - Pants (trousers, casual pants, formal pants)
+            - Shorts (short pants)
+            - Dress (one-piece dresses, gowns)
+            - Jacket (casual jackets, outerwear)
+            - Denim Jacket (jean jackets, denim outerwear)
+            - Sports Jacket (athletic jackets, windbreakers)
+            - Blazer (formal blazers, suit jackets)
+            - Coat (long coats, overcoats)
+            - Hoodie (hooded sweatshirts)
+            - Sweater (pullovers, knitwear)
+            - Polo (polo shirts, collared tees)
+            - Skirt (women's skirts)
             
-            Return in this exact format:
-            SUBCATEGORY: <most specific clothing type>
+            Distinguish carefully:
+            - "t-shirt" or "tee" = T-Shirt (NOT Shirt)
+            - "shirt" or "full sleeve" or "button up" = Shirt (NOT T-Shirt)
+            - "jeans" = Jeans (NOT Denim Jacket)
+            - "denim jacket" = Denim Jacket (NOT Jeans)
+            
+            Return in this exact format using ONLY the subcategory names from above:
+            SUBCATEGORY: <exact subcategory name>
             TERMS: <comma-separated search variations>
             
             Example for "show me jeans":
             SUBCATEGORY: Jeans
             TERMS: jeans, denim pants, blue jeans, casual jeans
             
-            Example for "denim jacket":
-            SUBCATEGORY: Denim Jacket
-            TERMS: denim jacket, jean jacket, casual jacket
+            Example for "full sleeve shirts":
+            SUBCATEGORY: Shirt
+            TERMS: shirt, full sleeve shirt, formal shirt, button-up shirt
+            
+            Example for "t-shirts":
+            SUBCATEGORY: T-Shirt
+            TERMS: t-shirt, tee, casual tee, graphic tee
             """
             
             response = llm.invoke(prompt)
@@ -258,37 +278,62 @@ def search_products_rag(query, num_results=20):
                 all_results = []
                 seen_product_ids = set()
                 
+                # Map common variations to actual subcategories
+                SUBCATEGORY_MAP = {
+                    "Shirt/Top": "Shirt",
+                    "Top": "Shirt", 
+                    "Tops": "Shirt",
+                    "T-Shirts": "T-Shirt",
+                    "Tee": "T-Shirt",
+                    "Jean": "Jeans",
+                    "Pant": "Pants",
+                    "Short": "Shorts",
+                    "Dresses": "Dress",
+                    "Jackets": "Jacket",
+                    "Blazers": "Blazer",
+                    "Coats": "Coat",
+                    "Hoodies": "Hoodie",
+                    "Sweaters": "Sweater",
+                    "Polos": "Polo",
+                    "Skirts": "Skirt"
+                }
+                
+                # Normalize the target subcategory
+                normalized_subcategory = SUBCATEGORY_MAP.get(target_subcategory, target_subcategory) if target_subcategory else None
+                
                 # Prioritize target subcategory search
-                search_terms_prioritized = search_terms[:5] if not target_subcategory else [target_subcategory] + search_terms[:4]
+                search_terms_prioritized = search_terms[:5] if not normalized_subcategory else [normalized_subcategory] + search_terms[:4]
                 
                 for term in search_terms_prioritized:
                     try:
                         # Build where clause to filter by subcategory if we have a target
                         where_clause = None
-                        if target_subcategory and term == target_subcategory:
+                        if normalized_subcategory and term == normalized_subcategory:
                             # Exact subcategory match for first term
-                            where_clause = {"subcategory": {"$eq": target_subcategory}}
-                            print(f"Searching with subcategory filter: {target_subcategory}")
+                            where_clause = {"subcategory": {"$eq": normalized_subcategory}}
+                            print(f"Searching with subcategory filter: {normalized_subcategory}")
                         
                         result = collection.query(
                             query_texts=[term],
-                            n_results=min(15, num_results),
+                            n_results=min(20, num_results * 2),  # Get more results initially
                             include=["documents", "metadatas", "distances"],
                             where=where_clause
                         )
                         
                         if result["metadatas"] and result["metadatas"][0]:
                             print(f"ChromaDB found {len(result['metadatas'][0])} results for '{term}'" + 
-                                  (f" (filtered by {target_subcategory})" if where_clause else ""))
+                                  (f" (filtered by {normalized_subcategory})" if where_clause else ""))
                             
                             # Process results
                             for i, metadata in enumerate(result["metadatas"][0]):
                                 product_id = metadata.get("product_id")
                                 product_subcategory = metadata.get("subcategory", "")
                                 
-                                # Skip if wrong subcategory when we have a target
-                                if target_subcategory and product_subcategory != target_subcategory:
-                                    continue
+                                # Apply subcategory filtering
+                                if normalized_subcategory:
+                                    # Strict matching for the primary subcategory
+                                    if product_subcategory != normalized_subcategory:
+                                        continue
                                 
                                 if product_id and product_id not in seen_product_ids:
                                     product_data = {
@@ -314,13 +359,20 @@ def search_products_rag(query, num_results=20):
                     # Sort by relevance (lower distance = more relevant)
                     all_results.sort(key=lambda x: x["distance"])
                     chroma_results = all_results[:num_results]
-                    print(f"ChromaDB found {len(chroma_results)} unique products")
+                    print(f"ChromaDB successfully found {len(chroma_results)} filtered products for '{query}'")
                     
-                    if chroma_results:
+                    # Only return if we have enough results
+                    if len(chroma_results) >= min(10, num_results):
                         return chroma_results
+                    else:
+                        print(f"Not enough ChromaDB results ({len(chroma_results)}), falling back to SQL")
+                else:
+                    print("No ChromaDB results matched the filters")
             
         except Exception as e:
             print(f"Gemini/ChromaDB approach failed: {e}")
+            import traceback
+            traceback.print_exc()
         
         # Fallback to direct SQL search
         print("=== FALLING BACK TO SQL SEARCH ===")
